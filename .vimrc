@@ -1,6 +1,6 @@
 "ma set mark named "a" press 'a or `a to jump to mark "a"
 ":tabnew create new tab :tabnext next tab
-":ls list buffers :bufunload! N :bufdel! N delete buffer number N
+":ls list buffers :bunload! N :bdel! N delete buffer number N
 ":new to open new window :sp for same file in two window :vnew for vertical new window
 ":resize 10 to resize of 10 lines horizontal :vertical resize 10 to resize of 10 vertically lines
 
@@ -19,11 +19,16 @@ set nocompatible
 syntax on
 set scrolloff=999 "cursor on meddle alvays
 
+filetype on
+filetype plugin on
 autocmd BufNewFile,BufRead *.hpp set cindent tabstop=4 shiftwidth=4 expandtab
 autocmd BufNewFile,BufRead *.cpp set cindent tabstop=4 shiftwidth=4 expandtab
 autocmd BufNewFile,BufRead *.h set cindent tabstop=4 shiftwidth=4 expandtab
 autocmd BufNewFile,BufRead *.c set cindent tabstop=4 shiftwidth=4 expandtab
+"autocmd BufNewFile,BufRead *.htm  filetype plugin indent on 
+"autocmd BufNewFile,BufRead *.html filetype plugin indent on
 
+command Thtml :%!tidy -q -i --show-errors 0
 
 set laststatus=2
 set statusline=
