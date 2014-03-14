@@ -1,0 +1,100 @@
+strace ls 2>&1 | tee log ##### redirect stderr and stdout to pipe tee write stdin on console and to the file
+
+
+wget --recursive --no-clobber --page-requisites --html-extension --convert-links --restrict-file-names=unix,ascii --domains opennet.ru --no-parent http://site.com/doc/ ############ download website
+
+cpio -idmv < initrd-file
+find ./ | cpio -H newc -o > /boot/new-initrd.cpio ###### create cpio archive
+
+
+####memory
+cat /proc/meminfo
+cat /proc/sys/vm/swappiness
+
+echo 1 > /proc/sys/vm/drop_caches && sync && echo 2 > /proc/sys/vm/drop_caches && sync && echo 3 > /proc/sys/vm/drop_caches && sync && free -h
+
+
+iostat slabtop 
+find ./ | cpio -H newc -o > /boot/new-initrd.cpio
+cpio -idmv < file_name
+
+# ifconfig eth0 ${IP_ADDR} broadcast ${BROADCAST} netmask ${NETMASK} up
+route add default gw ${GATEWAY}
+
+
+#unarchive
+bzip2 -cd filename.tar.bz2 | tar -xvf -
+
+
+#print used space on mounted volume
+df
+
+
+#get or set hard disks parameters
+hdparm
+
+
+#what file is opened on filesystem
+fuser -mv /mount_point
+
+
+#concatenate and compress files
+tar -c * > archeve.tar
+bzip2 -z archeve.tar  #result file is archeve.tar.bz2
+
+#search files which was later date of change than %filename1,
+#and files which was earlier date of change than %filename2
+find . \( -newer %filename1 \) -and \( ! -newer %filename2 \)
+
+
+#redirect and merge stderr into stdout
+date > file 2>$1
+
+
+#Search  the  short  descriptions  and  manual  page names for the keyword printf as regular #expression.
+man -k keyword
+
+
+#output the first part of file
+head
+
+
+# cut - remove sections from each line of files
+cut
+
+
+# tr - translate or delete characters
+tr
+
+# whatis whereis which
+whatis    whereis   which
+
+
+#nmap - Network exploration tool and security / port scanner
+nmap -sT server.example.com    # will be scanning port from 0 to 1024
+nmap -O -sV server.example.com    # will be scanning ports and detect operation sistem
+
+
+objdump
+xargs
+
+lsof -p
+
+bg - run jobs in the background
+
+help bg
+help fg
+help jobs
+help disown
+man bash
+info bash
+
+dtach
+
+nohup - run a command immune to hangups, with output to a non-tty
+
+du - disk usage
+
+tee # read from standard input and write to standard output and files
+
+aptitude search package_name|sed -n '/^i *./p'|sed 's/^i   //'|sed 's/^i A //'|sed 's/ *- .*//' #cut all from aptitude output without package names
