@@ -1,0 +1,99 @@
+1
+#############################
+# create repo
+#############################
+
+git init
+#create repo
+
+touch filename test.c && git add filename *.c
+# indexing test.c filename
+
+git clone git://github.com/project.git
+#create project folder and clone into folder
+
+git status
+# show status of repo
+# indexing files, commits
+
+git diff
+# compare indexing and not indexing files
+
+git diff --cashed
+git diff --staged
+# copmare staging files and last commit
+
+git commit
+# create commit in $EDITOR text editor
+#create SHA-1 for commit
+
+git commit -m "first commit"
+# do not open editor, commit string pass in quotes
+# create SHA-1 for commit
+
+git commit -a
+# tracking files. not yet "git add for tracking files"
+
+git rm filename
+# release tracking for filename, but file cannot remove from hard drive
+# if remove file from hard drive, file stay by tracking as
+# not staged for commit
+
+git rm --cashed filename
+# release staged for filename and release tracking
+
+2
+#################################
+# working with commits and versions
+#################################
+
+git clone git://github.com/someproject.git
+cd someproject
+git log
+# show all commits and SHA-1 sum for commits
+
+git log -p
+#show delta beetwen commits
+
+git log -p -2
+#delta beetwen -2 last commits
+
+git log --stat
+# show statistic for commits
+
+git log --since=2.weeks
+# 2 weeks sience commits
+
+git commit -m 'initial commit'
+git add forgotten_file
+git commit --amend
+# add fotgotten file to early commit
+
+git reset HEAD file_name
+#reset stage fo file_name
+
+git checkout -- file_name
+# rollback changes in file_name
+
+git remote -v
+# show url for repo
+
+git remote add repo_name git://github.com/project-name.git
+# create repo
+
+git fetch git://github.com/project.git
+# refresh local repo
+
+git push git://github.com/project.git master
+# send local commit to remote server
+
+git show origin
+# show remote repo
+
+git remote rename from_name to_name
+git remote rm rm_name
+# rename rmote repo
+# remove remote repo
+
+
+
