@@ -95,5 +95,26 @@ git remote rm rm_name
 # rename rmote repo
 # remove remote repo
 
+#############################################
+# tags
+# ###########################################
+
+git tag
+# view tags
+
+git tag -a v1.4 -m 'version 1.4'
+# create tag with comment
+
+git show v1.4
+# view tag 1.4 comment and SHA-1
+
+git tag v1.4ligth
+# create ligth tag, only tagged commit
+
+git tag -a v1.2 $SHA-1
+# tagging erly commit
+
+git push origin --tags
+# send all tags to the server
 
 
