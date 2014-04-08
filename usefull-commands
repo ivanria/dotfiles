@@ -21,6 +21,11 @@ cpio -idmv < file_name
 # ifconfig eth0 ${IP_ADDR} broadcast ${BROADCAST} netmask ${NETMASK} up
 route add default gw ${GATEWAY}
 
+#find . -name \*.c | xargs grep '^function'
+grep -nHe ^xalloc_die -r .
+
+#awk
+echo "username=DefUser2; PRNT=HP:0111020202=yes; HP:0s0dw33333=no; SCAN=HP:0999695444; FLASH=Kingston:5B651F00047B=rw;JetFlash:26HJQV7I57QG86CB=ro;" |  awk -F";"                          '{ for (i=1; i<=NF; i++) { if ($i ~ "username=.*") { print $i } } }' | sed 's/username=//'
 
 #unarchive
 bzip2 -cd filename.tar.bz2 | tar -xvf -
