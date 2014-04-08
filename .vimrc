@@ -3,31 +3,68 @@
 ":ls list buffers :bunload! N :bdel! N delete buffer number N
 ":new to open new window :sp for same file in two window :vnew for vertical new window
 ":resize 10 to resize of 10 lines horizontal :vertical resize 10 to resize of 10 vertically lines
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "macros - press qa to start record macross named "a"
 "doing some things
 "type q to stop recording
-"repeat writing macros type @a where "a" is aname of macross
+"repeat writing macros type @a where "a" is a name of macross
 "repeat more than one type @a10
 "repeat last move press "." dot
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"building programm within vim
+":make build project with Makefile
+":cc jump to erro
+":cnext :cprevious next prev error
+"clist list of errors
+":copen open new window with errors
+"Enter on error - jump to corresponding errors in source
+":cclose close widow
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"folding
+":set foldmethod=
+"manusl only manual folding
+"expr blocks fold corresponding of foldexpr value
+"syntax folding corresponding of syntaxis. !!! the most recomended
+"marke folding from markers
+"""""""""""""""""""""""""
+"folding commands:
+" zo open folder
+" zO open folder recursively
+" zc close fold
+" zC close fold recursively
+" za if open, then close and vice versa
+" zA same as previouse, but recursively
+" zr FOLDLEVEL+=1
+" zR open all folds in file
+" zm FOLDLEVEL-=1
+" zM close all folds in file
+""""""""""""""""""""""""""""""""""""""""""
+set nocompatible
 
+:set foldmethod=syntax
+
+if $TERM == "xterm-256color"
+	set t_Co=256
+endif
 
 nnoremap tj :tabnext<CR> 
 nnoremap tk :tabprev<CR> 
 nnoremap <C-t> :tabnew<CR>
 
-set nocompatible
-syntax on
+syntax enable
+color buttercream
 set scrolloff=999 "cursor on meddle alvays
 
-filetype on
 filetype plugin on
-autocmd BufNewFile,BufRead *.hpp set cindent tabstop=4 shiftwidth=4 expandtab
-autocmd BufNewFile,BufRead *.cpp set cindent tabstop=4 shiftwidth=4 expandtab
-autocmd BufNewFile,BufRead *.h set cindent tabstop=4 shiftwidth=4 expandtab
-autocmd BufNewFile,BufRead *.c set cindent tabstop=4 shiftwidth=4 expandtab
-autocmd BufNewFile,BufRead *.htm  set cindent expandtab shiftwidth=2 tabstop=2 
-autocmd BufNewFile,BufRead *.html set cindent expandtab shiftwidth=2 tabstop=2
+filetype on
+"autocmd BufNewFile,BufRead *.hpp set cindent tabstop=8 shiftwidth=8 
+"autocmd BufNewFile,BufRead *.cpp set cindent tabstop=8 shiftwidth=8 
+"autocmd BufNewFile,BufRead *.h set cindent tabstop=8 shiftwidth=8 
+"autocmd BufNewFile,BufRead *.c set cindent tabstop=8 shiftwidth=8
+"autocmd BufNewFile,BufRead *.c set cindent tabstop=4 shiftwidth=4 expandtab
+autocmd BufNewFile,BufRead *.htm  set cindent shiftwidth=2 tabstop=2 
+autocmd BufNewFile,BufRead *.html set cindent shiftwidth=2 tabstop=2
+"autocmd BufNewFile,BufRead 
 
 command Thtml :%!tidy -utf8 -q -i --show-errors 0
 
@@ -49,9 +86,6 @@ set showcmd
 set showmode
 
 set smartcase
-
-"set encoding=utf-8
-"set termencoding=utf-8
 
 set fileencodings=utf-8,cp1251,cp866,koi8-r
 

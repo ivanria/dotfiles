@@ -19,7 +19,7 @@ git status
 git diff
 # compare indexing and not indexing files
 
-git diff --cashed
+git diff --cached
 git diff --staged
 # copmare staging files and last commit
 
@@ -41,6 +41,13 @@ git rm filename
 
 git rm --cashed filename
 # release staged for filename and release tracking
+
+
+git format-patch origin/master --stdout > ../my_extraversion.patch
+# create patch between my branch and master branch, wheen HEAD in my brabch
+
+cat .git/HEAD
+# to determine what branch i am
 
 2
 #################################
