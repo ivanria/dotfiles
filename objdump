@@ -1,0 +1,95 @@
+ivr@nout:/tmp$ cat test.c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main(int argc, char *argv[])
+{
+	char *string = "hello world\n";
+
+	for (; *string != '\0'; string++)
+		printf("%c", *string);
+	return 0;
+}
+ivr@nout:/tmp$ gcc test.c 
+ivr@nout:/tmp$ ./a.out 
+hello world
+ivr@nout:/tmp$ gcc -S test.c 
+ivr@nout:/tmp$ 
+ivr@nout:/tmp$ 
+ivr@nout:/tmp$ cat test.s
+	.file	"test.c"
+	.section	.rodata
+.LC0:
+	.string	"hello world\n"
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB0:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$32, %rsp
+	movl	%edi, -20(%rbp)
+	movq	%rsi, -32(%rbp)
+	movq	$.LC0, -8(%rbp)
+	jmp	.L2
+.L3:
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	movsbl	%al, %eax
+	movl	%eax, %edi
+	call	putchar
+	addq	$1, -8(%rbp)
+.L2:
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L3
+	movl	$0, %eax
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	main, .-main
+	.ident	"GCC: (Debian 4.7.2-5) 4.7.2"
+	.section	.note.GNU-stack,"",@progbits
+ivr@nout:/tmp$ objcopy --only-section=.text --output-target binary test.o test.bin
+ivr@nout:/tmp$ objcopy --only-section=.text --output-target binary test.o test.bin
+ivr@nout:/tmp$ 
+ivr@nout:/tmp$ objdump -D -b binary -m i386:x86-64 test.bin
+
+test.bin:     file format binary
+
+
+Disassembly of section .data:
+
+0000000000000000 <.data>:
+   0:	55                   	push   %rbp
+   1:	48 89 e5             	mov    %rsp,%rbp
+   4:	48 83 ec 20          	sub    $0x20,%rsp
+   8:	89 7d ec             	mov    %edi,-0x14(%rbp)
+   b:	48 89 75 e0          	mov    %rsi,-0x20(%rbp)
+   f:	48 c7 45 f8 00 00 00 	movq   $0x0,-0x8(%rbp)
+  16:	00 
+  17:	eb 16                	jmp    0x2f
+  19:	48 8b 45 f8          	mov    -0x8(%rbp),%rax
+  1d:	0f b6 00             	movzbl (%rax),%eax
+  20:	0f be c0             	movsbl %al,%eax
+  23:	89 c7                	mov    %eax,%edi
+  25:	e8 00 00 00 00       	callq  0x2a
+  2a:	48 83 45 f8 01       	addq   $0x1,-0x8(%rbp)
+  2f:	48 8b 45 f8          	mov    -0x8(%rbp),%rax
+  33:	0f b6 00             	movzbl (%rax),%eax
+  36:	84 c0                	test   %al,%al
+  38:	75 df                	jne    0x19
+  3a:	b8 00 00 00 00       	mov    $0x0,%eax
+  3f:	c9                   	leaveq 
+  40:	c3                   	retq   
+ivr@nout:/tmp$ 
+
