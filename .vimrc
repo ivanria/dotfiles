@@ -13,7 +13,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "building programm within vim
 ":make build project with Makefile
-":cc jump to erro
+":cc jump to error
 ":cnext :cprevious next prev error
 "clist list of errors
 ":copen open new window with errors
@@ -41,7 +41,7 @@
 """"""""""""""""""""""""""""""""""""""""""
 set nocompatible
 
-:set foldmethod=syntax
+let $VIMHOME = $HOME."/.vim"
 
 if $TERM == "xterm-256color"
 	set t_Co=256
@@ -51,20 +51,22 @@ nnoremap tj :tabnext<CR>
 nnoremap tk :tabprev<CR> 
 nnoremap <C-t> :tabnew<CR>
 
-syntax enable
-color buttercream
+"color default
 set scrolloff=999 "cursor on meddle alvays
 
-filetype plugin on
-filetype on
-"autocmd BufNewFile,BufRead *.hpp set cindent tabstop=8 shiftwidth=8 
-"autocmd BufNewFile,BufRead *.cpp set cindent tabstop=8 shiftwidth=8 
-"autocmd BufNewFile,BufRead *.h set cindent tabstop=8 shiftwidth=8 
-"autocmd BufNewFile,BufRead *.c set cindent tabstop=8 shiftwidth=8
-"autocmd BufNewFile,BufRead *.c set cindent tabstop=4 shiftwidth=4 expandtab
+"filetype plugin on
+"filetype on
+"filetype indent on
+autocmd BufNewFile,BufRead *.hpp source $VIMHOME/extend_files/linuxsty.vim 
+autocmd BufNewFile,BufRead *.cpp source $VIMHOME/extend_files/linuxsty.vim 
+autocmd BufNewFile,BufRead *.h source $VIMHOME/extend_files/linuxsty.vim 
+autocmd BufNewFile,BufRead *.c source $VIMHOME/extend_files/linuxsty.vim 
+autocmd BufNewFile *.c so $VIMHOME/extend_files/cheader.txt
 autocmd BufNewFile,BufRead *.htm  set cindent shiftwidth=2 tabstop=2 
 autocmd BufNewFile,BufRead *.html set cindent shiftwidth=2 tabstop=2
+autocmd BufNewFile,BufRead *.py source $VIMHOME/indent/python.vim
 "autocmd BufNewFile,BufRead 
+
 
 command Thtml :%!tidy -utf8 -q -i --show-errors 0
 
@@ -89,6 +91,7 @@ set smartcase
 
 set fileencodings=utf-8,cp1251,cp866,koi8-r
 
+syntax on
 " <F7> File fileformat (dos - <CR> <NL>, unix - <NL>, mac - <CR>)
 map <F7>  :execute RotateFileFormat()<CR>
 vmap <F7>	<C-C><F7>
