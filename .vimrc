@@ -39,7 +39,18 @@
 " zm FOLDLEVEL-=1
 " zM close all folds in file
 """"""""""""""""""""""""""""""""""""""""""
+"vimdiff
+"diff obtain
+"diff put
+""""""""""""""""""""""""""""""""""""""""""
+"undo redo
+":earlier 4m
+":later 45s
+":undolist
+""""""""""""""""""""""""""""""""""""""""""
+
 set nocompatible
+syntax on
 
 let $VIMHOME = $HOME."/.vim"
 
@@ -91,7 +102,13 @@ set smartcase
 
 set fileencodings=utf-8,cp1251,cp866,koi8-r
 
-syntax on
+"persistent undo
+set undofile
+set undodir=$VIMHOME/undodir
+set undolevels=1000
+set undoreload=10000
+
+
 " <F7> File fileformat (dos - <CR> <NL>, unix - <NL>, mac - <CR>)
 map <F7>  :execute RotateFileFormat()<CR>
 vmap <F7>	<C-C><F7>
