@@ -1,3 +1,6 @@
+##### change virtual terminal
+chvt 1 or 7
+
 strace ls 2>&1 | tee log ##### redirect stderr and stdout to pipe tee write stdin on console and to the file
 
 

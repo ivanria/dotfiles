@@ -1,0 +1,43 @@
+###headers###
+gcc -H source.c -- list of all included headers
+
+###optimization###
+gcc -Q -O3 --help=optimizer -- list of optimization option
+
+__attribute__ - attribute of function, struct or any data
+__attribute__ ((noreturn)) - function cannot return to functiono
+можно задать атрибут, при котором функция будет выполняться до функции
+main или атрибут, после выхода из программы
+
+{ compaund statements }
+
+void *__builtin_return_adress (unsigned int level); - return pionter to function
+
+###label addresses###
+void *target;
+target = ##label123;
+label123:
+
+###various args###
+__VA_ARGS__ 
+args
+
+###gdb###
+need compile with debug flag
+gcc -g test.c -o test
+gdb ./a.out core - view crash couse
+after start press bt - back trace
+
+gdb ./a.out nexti -- step by step per asm command
+gdb ./a.out next  -- step by step per c source command
+step stepi like but work in function
+display $expression - show value of expression on every step
+ulimit -c unlimit - create core dump per fail process
+To print the variables use "print varibale-name" or " p varibale-name"
+
+###assembly###
+gcc -c -g -O -Wa,-alh,-L file.c -- -alh is option to assembler
+as -o test.o test.s
+ld --oformat binary -Ttext 7c00 -o test test.o - -Ttext -Tbss -Tdata is origin
+to text, bss, data --section-start=sectionname=org like a -Ttext
+gcc -S -dp -- comments in assembly

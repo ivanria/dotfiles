@@ -48,6 +48,10 @@
 ":later 45s
 ":undolist
 """"""""""""""""""""""""""""""""""""""""""
+"Drawit plugin
+":Drawit - start drawing
+"\ds - stop drawing
+""""""""""""""""""""""""""""""""""""""""""
 
 set nocompatible
 syntax on
