@@ -1,0 +1,25 @@
+#####utilites######
+insmod /path/to/module/name_mod.ko
+rmmod name_mod
+modprobe name_mod
+modinfo name_mod
+lsmod
+depmod - generating modules.dep
+dmesg - kernel log
+cat /var/log/messages
+nm /path/to/module/name_mod.ko
+nm - names of someone obj or exec file
+objdump -t /path/to/module/name_mod.ko - print the symbol table
+readelf -s /path/to/module/name_mod.ko - like a objdump -t
+
+#####sys files#####
+/proc/modules - list of modules
+/proc/kallsyms - list of names of kernel
+/boot/System.map-$(uname -r) - like a kallsyms
+/proc/slabinfo - information about memory of modules
+/proc/meminfo - informaion about all memory
+/proc/devices - drivers and numbers of drivers in /dev
+/proc/interrupts  - interrupts
+/proc/ioports - ioports
+/proc/version
+

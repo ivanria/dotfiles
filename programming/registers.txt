@@ -1,0 +1,9 @@
+rax - accumulator
+rcx - counter
+rdx - data
+rbx - base
+rsi - source index
+rdi - destination index
+rsp - stack pointer
+rbp - dase pointer
+r8 - r15
