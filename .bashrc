@@ -55,7 +55,7 @@ fi
 if [ "$color_prompt" = yes ]; then
     PS1='${debian_chroot:+($debian_chroot)}\[\e[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\[\e[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\e[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\n\$ '
 fi
 unset color_prompt force_color_prompt
 
@@ -81,8 +81,8 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # some more ls aliases
-alias ll='ls -lah'
-alias la='ls -A'
+alias ll='ls -lh'
+alias la='ls -lah'
 alias l='ls -CF'
 
 # Alias definitions.
@@ -101,3 +101,8 @@ set -o vi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
+
+ulimit -c unlimited
+#PATH="${PATH}:/usr/java/jre1.6.0/bin"
+
+export cflags='-Wall -Wextra -O2 -g -march=atom'
