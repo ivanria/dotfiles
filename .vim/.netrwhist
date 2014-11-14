@@ -1,4 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
-let g:netrw_dirhist_1='/home/ivr/.vim/plugin'
-let g:netrw_dirhist_2='/home/ivr/work/programming/download/summary-1.0.0/src/lib'
+let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_1='/home/ivr/.vim'
+let g:netrw_dirhist_2='/home/ivr/.vim/extend_files'
+let g:netrw_dirhist_3='/opt/rtems-4.10/sparc-rtems/lib'
+let g:netrw_dirhist_4='/opt/rtems-4.10/sparc-rtems/lib/v8'
+let g:netrw_dirhist_5='/opt/rtems-4.10/sparc-rtems/lib'

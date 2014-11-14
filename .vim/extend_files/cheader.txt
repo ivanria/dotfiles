@@ -3,8 +3,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int main(int argc, char *argv[])
+int main(void)
 {
 	return 0;
 }
 .
+:normal zr
+:normal 7gg

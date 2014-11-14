@@ -69,19 +69,20 @@ nnoremap <C-t> :tabnew<CR>
 "color default
 set scrolloff=999 "cursor on meddle alvays
 
-"filetype plugin on
-"filetype on
-"filetype indent on
+filetype plugin on
+filetype on
+filetype indent on
 autocmd BufNewFile,BufRead *.hpp source $VIMHOME/extend_files/linuxsty.vim 
 autocmd BufNewFile,BufRead *.cpp source $VIMHOME/extend_files/linuxsty.vim 
 autocmd BufNewFile,BufRead *.h source $VIMHOME/extend_files/linuxsty.vim 
 autocmd BufNewFile,BufRead *.c source $VIMHOME/extend_files/linuxsty.vim 
+autocmd BufNewFile,BufRead *.h source $VIMHOME/tags_gen.vim 
+autocmd BufNewFile,BufRead *.c source $VIMHOME/tags_gen.vim 
 autocmd BufNewFile *.c so $VIMHOME/extend_files/cheader.txt
 autocmd BufNewFile,BufRead *.htm  set cindent shiftwidth=2 tabstop=2 
 autocmd BufNewFile,BufRead *.html set cindent shiftwidth=2 tabstop=2
 autocmd BufNewFile,BufRead *.py source $VIMHOME/indent/python.vim
 "autocmd BufNewFile,BufRead 
-
 
 command Thtml :%!tidy -utf8 -q -i --show-errors 0
 
@@ -106,12 +107,22 @@ set smartcase
 
 set fileencodings=utf-8,cp1251,cp866,koi8-r
 
+set hlsearch
+
 "persistent undo
 set undofile
 set undodir=$VIMHOME/undodir
 set undolevels=1000
 set undoreload=10000
 
+":map <F11>  :sp tags<CR>:%s/^\([^	:]*:\)\=\([^	]*\).*/syntax keyword Tag \2/<CR>:wq! tags.vim<CR>/^<CR><F12>
+":map <F12>  :so tags.vim<CR>
+
+" load the types.vim highlighting file, if it exists
+autocmd BufRead,BufNewFile *.[ch] let fname = expand('<afile>:p:h') . '/types.vim'
+autocmd BufRead,BufNewFile *.[ch] if filereadable(fname)
+autocmd BufRead,BufNewFile *.[ch]   exe 'so ' . fname
+autocmd BufRead,BufNewFile *.[ch] endif
 
 " <F7> File fileformat (dos - <CR> <NL>, unix - <NL>, mac - <CR>)
 map <F7>  :execute RotateFileFormat()<CR>

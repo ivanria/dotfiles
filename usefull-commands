@@ -9,6 +9,8 @@ wget --recursive --no-clobber --page-requisites --html-extension --convert-links
 cpio -idmv < initrd-file
 find ./ | cpio -H newc -o > /boot/new-initrd.cpio ###### create cpio archive
 
+#reqursive substitude
+find -type f -name \*.h  -exec sed -i -r 's/server\.h"/net\.h"/g' {} \;
 
 ####memory
 cat /proc/meminfo
@@ -25,6 +27,8 @@ cpio -idmv < file_name
 route add default gw ${GATEWAY}
 
 #find . -name \*.c | xargs grep '^function'
+find . -type f -exec sh -c 'f={}; #created variables with finded filename
+find . -exec grep -H -n 'hello' {} \;  #Hn it is filename and number of string
 grep -nHe ^xalloc_die -r .
 
 #awk

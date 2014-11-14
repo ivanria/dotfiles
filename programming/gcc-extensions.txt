@@ -28,15 +28,23 @@ gcc -g test.c -o test
 gdb ./a.out core - view crash couse
 after start press bt - back trace
 
+gdb ./a.out
+(gdb) break main #or any other function
 gdb ./a.out nexti -- step by step per asm command
 gdb ./a.out next  -- step by step per c source command
 step stepi like but work in function
+print var - show variable
+print *arr@len - print array
 display $expression - show value of expression on every step
 ulimit -c unlimit - create core dump per fail process
 To print the variables use "print varibale-name" or " p varibale-name"
 
+###help###
+gcc -c -Q -march=native --help=target
+  
 ###assembly###
 gcc -c -g -O -Wa,-alh,-L file.c -- -alh is option to assembler
+gcc -S -fverbose-asm source.c
 as -o test.o test.s
 ld --oformat binary -Ttext 7c00 -o test test.o - -Ttext -Tbss -Tdata is origin
 to text, bss, data --section-start=sectionname=org like a -Ttext
