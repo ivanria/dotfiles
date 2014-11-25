@@ -26,12 +26,14 @@ args
 need compile with debug flag
 gcc -g test.c -o test
 gdb ./a.out core - view crash couse
+gdb --args ./a.out "hello world" -- run progrma with arguments
 after start press bt - back trace
 
+ddd -- it is visual gdb
 gdb ./a.out
 (gdb) break main #or any other function
 gdb ./a.out nexti -- step by step per asm command
-gdb ./a.out next  -- step by step per c source command
+gdb ./a.out next  -- step by step per c source command not work in functions
 step stepi like but work in function
 print var - show variable
 print *arr@len - print array
