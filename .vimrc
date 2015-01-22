@@ -72,13 +72,14 @@ set scrolloff=999 "cursor on meddle alvays
 filetype plugin on
 filetype on
 filetype indent on
-autocmd BufNewFile,BufRead *.hpp source $VIMHOME/extend_files/linuxsty.vim 
-autocmd BufNewFile,BufRead *.cpp source $VIMHOME/extend_files/linuxsty.vim 
+autocmd BufNewFile,BufRead *.hpp source $VIMHOME/extend_files/cpp.vim 
+autocmd BufNewFile,BufRead *.cpp source $VIMHOME/extend_files/cpp.vim 
 autocmd BufNewFile,BufRead *.h source $VIMHOME/extend_files/linuxsty.vim 
 autocmd BufNewFile,BufRead *.c source $VIMHOME/extend_files/linuxsty.vim 
 autocmd BufNewFile,BufRead *.h source $VIMHOME/tags_gen.vim 
 autocmd BufNewFile,BufRead *.c source $VIMHOME/tags_gen.vim 
 autocmd BufNewFile *.c so $VIMHOME/extend_files/cheader.txt
+autocmd BufNewFile *.cpp so $VIMHOME/extend_files/cppheader.txt
 autocmd BufNewFile,BufRead *.htm  set cindent shiftwidth=2 tabstop=2 
 autocmd BufNewFile,BufRead *.html set cindent shiftwidth=2 tabstop=2
 autocmd BufNewFile,BufRead *.py source $VIMHOME/indent/python.vim

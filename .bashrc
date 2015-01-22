@@ -104,5 +104,6 @@ fi
 
 ulimit -c unlimited
 #PATH="${PATH}:/usr/java/jre1.6.0/bin"
+export PATH="${PATH}/usr/java/jre1.8.0_25/bin:/usr/java/jre1.8.0_25/lib:/usr/java/jre1.8.0_25/man"
 
 export cflags='-Wall -Wextra -O2 -g -march=atom'
