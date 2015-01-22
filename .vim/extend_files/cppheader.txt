@@ -1,0 +1,10 @@
+:insert
+#include <iostream>
+
+int main(void)
+{
+	return 0;
+}
+.
+:normal zr
+:normal 7gg

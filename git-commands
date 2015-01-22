@@ -132,5 +132,4 @@ git push origin --tags
 #remove file from repo and commit
 git commit --amend
 #remove file from commit list
-git reset HEAD^1 file_name
-git push origin master --farce
+git push origin master --force
