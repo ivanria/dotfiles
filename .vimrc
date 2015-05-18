@@ -52,6 +52,18 @@
 ":Drawit - start drawing
 "\ds - stop drawing
 """"""""""""""""""""""""""""""""""""""""""
+"tabs
+"to move tab to left :tabm +1
+"to move tab rigth :tabm -1
+"to move tab to end :tabm
+""""""""""""""""""""""""""""""""""""""""""
+"vim session
+"to save session :mksession ~/mysession.vim
+"to load session from file :source ~/mysession.vim
+"to load session wheen run vim
+"vim -S ~/mysession.vim
+""""""""""""""""""""""""""""""""""""""""""
+
 
 set nocompatible
 syntax on
