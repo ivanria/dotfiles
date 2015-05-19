@@ -1,3 +1,4 @@
+":xa exit from all tabs and windows
 "ma set mark named "a" press 'a or `a to jump to mark "a"
 ":tabnew create new tab :tabnext next tab
 ":ls list buffers :bunload! N :bdel! N delete buffer number N
@@ -63,6 +64,11 @@
 "to load session wheen run vim
 "vim -S ~/mysession.vim
 """"""""""""""""""""""""""""""""""""""""""
+"cscope: create ~/cscope directory, then cd ~/cscope and
+"find "project_dir" -name \*.c -o -name \*.h -o -name \*.y -o -name \*.l > cscope.files
+"in project dir run vim -t main
+"or in source code press ctrl+spacebar and press s
+"""""""""""""""""""""""""""""""""""""""""
 
 
 set nocompatible
