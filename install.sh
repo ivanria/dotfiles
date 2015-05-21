@@ -10,3 +10,6 @@ cp .bashrc_root ~/.bashrc
 cp .dircolors ~/.dircolors
 
 #cp sh.vim
+
+aptitue install cscope
+
