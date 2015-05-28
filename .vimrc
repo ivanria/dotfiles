@@ -1,190 +1,304 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" CSCOPE settings for vim           
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"
-" This file contains some boilerplate settings for vim's cscope interface,
-" plus some keyboard mappings that I've found useful.
-"
-" USAGE: 
-" -- vim 6:     Stick this file in your ~/.vim/plugin directory (or in a
-"               'plugin' directory in some other directory that is in your
-"               'runtimepath'.
-"
-" -- vim 5:     Stick this file somewhere and 'source cscope.vim' it from
-"               your ~/.vimrc file (or cut and paste it into your .vimrc).
-"
-" NOTE: 
-" These key maps use multiple keystrokes (2 or 3 keys).  If you find that vim
-" keeps timing you out before you can complete them, try changing your timeout
-" settings, as explained below.
-"
-" Happy cscoping,
-"
-" Jason Duell       jduell@alumni.princeton.edu     2002/3/7
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+":xa exit from all tabs and windows
+": bufdo bd close all buffers
+"ma set mark named "a" press 'a or `a to jump to mark "a"
+":tabnew create new tab :tabnext next tab
+":ls list buffers :bunload! N :bdel! N delete buffer number N
+":new to open new window :sp for same file in two window :vnew for vertical new window
+":resize 10 to resize of 10 lines horizontal :vertical resize 10 to resize of 10 vertically lines
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"macros - press qa to start record macross named "a"
+"doing some things
+"type q to stop recording
+"repeat writing macros type @a where "a" is a name of macross
+"repeat more than one type @a10
+"repeat last move press "." dot
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"building programm within vim
+":make build project with Makefile
+":cc jump to error
+":cnext :cprevious next prev error
+"clist list of errors
+":copen open new window with errors
+"Enter on error - jump to corresponding errors in source
+":cclose close widow
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"folding
+":set foldmethod=
+"manusl only manual folding
+"expr blocks fold corresponding of foldexpr value
+"syntax folding corresponding of syntaxis. !!! the most recomended
+"marke folding from markers
+"""""""""""""""""""""""""
+"folding commands:
+" zo open folder
+" zO open folder recursively
+" zc close fold
+" zC close fold recursively
+" za if open, then close and vice versa
+" zA same as previouse, but recursively
+" zr FOLDLEVEL+=1
+" zR open all folds in file
+" zm FOLDLEVEL-=1
+" zM close all folds in file
+""""""""""""""""""""""""""""""""""""""""""
+"vimdiff
+"diff obtain
+"diff put
+""""""""""""""""""""""""""""""""""""""""""
+"undo redo
+":earlier 4m
+":later 45s
+":undolist
+""""""""""""""""""""""""""""""""""""""""""
+"Drawit plugin
+":Drawit - start drawing
+"\ds - stop drawing
+""""""""""""""""""""""""""""""""""""""""""
+"tabs
+"to move tab to left :tabm +1
+"to move tab rigth :tabm -1
+"to move tab to end :tabm
+""""""""""""""""""""""""""""""""""""""""""
+"vim session
+"to save session :mksession ~/mysession.vim
+"to load session from file :source ~/mysession.vim
+"to load session wheen run vim
+"vim -S ~/mysession.vim
+""""""""""""""""""""""""""""""""""""""""""
+"cscope: create ~/cscope directory, then cd ~/cscope and
+"find "project_dir" -name \*.c -o -name \*.h -o -name \*.y -o -name \*.l > cscope.files
+"in project dir run vim -t main
+"or in source code press ctrl+spacebar and press s
+"""""""""""""""""""""""""""""""""""""""""
 
 
-" This tests to see if vim was configured with the '--enable-cscope' option
-" when it was compiled.  If it wasn't, time to recompile vim... 
-if has("cscope")
+set nocompatible
+syntax on
 
-    """"""""""""" Standard cscope/vim boilerplate
+let $VIMHOME = $HOME."/.vim"
 
-    " use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
-    set cscopetag
-
-    " check cscope for definition of a symbol before checking ctags: set to 1
-    " if you want the reverse search order.
-    set csto=0
-
-    " add any cscope database in current directory
-    let FP7 = "/FastPath-SMB-esw-bcm5615x-iproc_wolf-BL36UCR-CLS-AQHS-src-7"
-    let FP8 = "/FastPath-SMB-esw-bcm5615x-iproc_wolf-BL36UCR-CLS-AQ-src-new"
-    let CWD = getcwd()
-
-    if FP7 == CWD
-	    let fpcscope_dir = $HOME . "/cscope-7/"
-	    "echo fpcscope_dir
-    elseif FP8 == CWD
-	    let fpcscope_dir = $HOME . "/cscope-8/"
-	    "echo fpcscope_dir
-    else
-	    let fpcscope_dir = $HOME . "/cscope/"
-	    "echo fpcscope_dir
-    endif
-
-    let fpcscope_file = fpcscope_dir . "cscope.out"
-
-"    if filereadable(fpcscope_file)
-"	    echo "file" . fpcscope_file . "is readeble"
-"    else
-"	    echo "bad"
-"    endif
-
-    if filereadable(fpcscope_file)
-        execute "cs" "add" fpcscope_file
-    " else add the database pointed to by environment variable 
-    elseif $CSCOPE_DB != ""
-        cs add $CSCOPE_DB
-    endif
-
-    " show msg when any other cscope db added
-    set cscopeverbose  
-
-
-    """"""""""""" My cscope/vim key mappings
-    "
-    " The following maps all invoke one of the following cscope search types:
-    "
-    "   's'   symbol: find all references to the token under cursor
-    "   'g'   global: find global definition(s) of the token under cursor
-    "   'c'   calls:  find all calls to the function name under cursor
-    "   't'   text:   find all instances of the text under cursor
-    "   'e'   egrep:  egrep search for the word under cursor
-    "   'f'   file:   open the filename under cursor
-    "   'i'   includes: find files that include the filename under cursor
-    "   'd'   called: find functions that function under cursor calls
-    "
-    " Below are three sets of the maps: one set that just jumps to your
-    " search result, one that splits the existing vim window horizontally and
-    " diplays your search result in the new window, and one that does the same
-    " thing, but does a vertical split instead (vim 6 only).
-    "
-    " I've used CTRL-\ and CTRL-@ as the starting keys for these maps, as it's
-    " unlikely that you need their default mappings (CTRL-\'s default use is
-    " as part of CTRL-\ CTRL-N typemap, which basically just does the same
-    " thing as hitting 'escape': CTRL-@ doesn't seem to have any default use).
-    " If you don't like using 'CTRL-@' or CTRL-\, , you can change some or all
-    " of these maps to use other keys.  One likely candidate is 'CTRL-_'
-    " (which also maps to CTRL-/, which is easier to type).  By default it is
-    " used to switch between Hebrew and English keyboard mode.
-    "
-    " All of the maps involving the <cfile> macro use '^<cfile>$': this is so
-    " that searches over '#include <time.h>" return only references to
-    " 'time.h', and not 'sys/time.h', etc. (by default cscope will return all
-    " files that contain 'time.h' as part of their name).
-
-
-    " To do the first type of search, hit 'CTRL-\', followed by one of the
-    " cscope search types above (s,g,c,t,e,f,i,d).  The result of your cscope
-    " search will be displayed in the current window.  You can use CTRL-T to
-    " go back to where you were before the search.  
-    "
-
-    nmap <C-\>s :tab cs find s <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>g :tab cs find g <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>c :tab cs find c <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>t :tab cs find t <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>e :tab cs find e <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>f :tab cs find f <C-R>=expand("<cfile>")<CR><CR>	
-    nmap <C-\>i :tab cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-    nmap <C-\>d :tab cs find d <C-R>=expand("<cword>")<CR><CR>	
-
-
-    " Using 'CTRL-spacebar' (intepreted as CTRL-@ by vim) then a search type
-    " makes the vim window split horizontally, with search result displayed in
-    " the new window.
-    "
-    " (Note: earlier versions of vim may not have the :tab scs command, but it
-    " can be simulated roughly via:
-    "    nmap <C-@>s <C-W><C-S> :tab cs find s <C-R>=expand("<cword>")<CR><CR>	
-
-    nmap <C-@>s :tab scs find s <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-@>g :tab scs find g <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-@>c :tab scs find c <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-@>t :tab scs find t <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-@>e :tab scs find e <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-@>f :tab scs find f <C-R>=expand("<cfile>")<CR><CR>	
-    nmap <C-@>i :tab scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>	
-    nmap <C-@>d :tab scs find d <C-R>=expand("<cword>")<CR><CR>	
-
-
-    " Hitting CTRL-space *twice* before the search type does a vertical 
-    " split instead of a horizontal one (vim 6 and up only)
-    "
-    " (Note: you may wish to put a 'set splitright' in your .vimrc
-    " if you prefer the new window on the right instead of the left
-
-    nmap <C-@><C-@>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>	
-    nmap <C-@><C-@>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>	
-    nmap <C-@><C-@>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
-
-
-    """"""""""""" key map timeouts
-    "
-    " By default Vim will only wait 1 second for each keystroke in a mapping.
-    " You may find that too short with the above typemaps.  If so, you should
-    " either turn off mapping timeouts via 'notimeout'.
-    "
-    "set notimeout 
-    "
-    " Or, you can keep timeouts, by uncommenting the timeoutlen line below,
-    " with your own personal favorite value (in milliseconds):
-    "
-    "set timeoutlen=4000
-    "
-    " Either way, since mapping timeout settings by default also set the
-    " timeouts for multicharacter 'keys codes' (like <F1>), you should also
-    " set ttimeout and ttimeoutlen: otherwise, you will experience strange
-    " delays as vim waits for a keystroke after you hit ESC (it will be
-    " waiting to see if the ESC is actually part of a key code like <F1>).
-    "
-    "set ttimeout 
-    "
-    " personally, I find a tenth of a second to work well for key code
-    " timeouts. If you experience problems and have a slow terminal or network
-    " connection, set it higher.  If you don't set ttimeoutlen, the value for
-    " timeoutlent (default: 1000 = 1 second, which is sluggish) is used.
-    "
-    "set ttimeoutlen=100
-    nmap <F12> :exe '!find' CWD '-name \*.c -o -name \*.cpp -o -name \*.h -o -name \*.hpp -o -name \*.y -o -name \*.l > ' fpcscope_dir . 'cscope.files'<CR>
-      \:exe '!cd ' fpcscope_dir '&& cscope -b -q' <CR>
-      \:cs reset<CR>
-
+if $TERM == "xterm-256color"
+	set t_Co=256
 endif
 
+nnoremap tj :tabnext<CR> 
+nnoremap tk :tabprev<CR> 
+nnoremap <C-t> :tabnew<CR>
+
+"color default
+set scrolloff=999 "cursor on meddle alvays
+
+filetype plugin on
+filetype on
+filetype indent on
+autocmd BufNewFile,BufRead *.hpp source $VIMHOME/extend_files/cpp.vim 
+autocmd BufNewFile,BufRead *.cpp source $VIMHOME/extend_files/cpp.vim 
+autocmd BufNewFile,BufRead *.h source $VIMHOME/extend_files/linuxsty.vim 
+autocmd BufNewFile,BufRead *.c source $VIMHOME/extend_files/linuxsty.vim 
+autocmd BufNewFile,BufRead *.h source $VIMHOME/tags_gen.vim 
+autocmd BufNewFile,BufRead *.c source $VIMHOME/tags_gen.vim 
+autocmd BufNewFile *.c so $VIMHOME/extend_files/cheader.txt
+autocmd BufNewFile *.cpp so $VIMHOME/extend_files/cppheader.txt
+autocmd BufNewFile,BufRead *.htm  set cindent shiftwidth=2 tabstop=2 
+autocmd BufNewFile,BufRead *.html set cindent shiftwidth=2 tabstop=2
+autocmd BufNewFile,BufRead *.py source $VIMHOME/indent/python.vim
+"autocmd BufNewFile,BufRead 
+
+command Thtml :%!tidy -utf8 -q -i --show-errors 0
+
+set laststatus=2
+set statusline=
+set statusline+=%-3.3n\
+set statusline+=%f\
+set statusline+=%h%m%r%w
+set statusline+=\[%{strlen(&ft)?&ft:'none'}]
+set statusline+=%=
+"set statusline+=0x%-8B
+set statusline+=%-14(%l,%c%V%)
+set statusline+=%<%P
+
+set ruler
+
+set showcmd
+
+set showmode
+
+set smartcase
+
+set fileencodings=utf-8,cp1251,cp866,koi8-r
+
+set hlsearch
+
+"persistent undo
+set undofile
+set undodir=$VIMHOME/undodir
+set undolevels=1000
+set undoreload=10000
+
+":map <F11>  :sp tags<CR>:%s/^\([^	:]*:\)\=\([^	]*\).*/syntax keyword Tag \2/<CR>:wq! tags.vim<CR>/^<CR><F12>
+":map <F12>  :so tags.vim<CR>
+
+" load the types.vim highlighting file, if it exists
+autocmd BufRead,BufNewFile *.[ch] let fname = expand('<afile>:p:h') . '/types.vim'
+autocmd BufRead,BufNewFile *.[ch] if filereadable(fname)
+autocmd BufRead,BufNewFile *.[ch]   exe 'so ' . fname
+autocmd BufRead,BufNewFile *.[ch] endif
+
+" <F7> File fileformat (dos - <CR> <NL>, unix - <NL>, mac - <CR>)
+map <F7>  :execute RotateFileFormat()<CR>
+vmap <F7>	<C-C><F7>
+imap <F7>	<C-O><F7>
+let b:fformatindex=0
+function! RotateFileFormat()
+  let y = -1
+  while y == -1
+    let encstring = "#unix#dos#mac#"
+    let x = match(encstring,"#",b:fformatindex)
+    let y = match(encstring,"#",x+1)
+    let b:fformatindex = x+1
+    if y == -1
+      let b:fformatindex = 0
+    else
+      let str = strpart(encstring,x+1,y-x-1)
+      return ":set fileformat=".str
+    endif
+  endwhile
+endfunction
+
+" <F8> File encoding for open
+" ucs-2le - MS Windows unicode encoding
+map <F8>	:execute RotateEnc()<CR>
+vmap <F8>	<C-C><F8>
+imap <F8>	<C-O><F8>
+let b:encindex=0
+function! RotateEnc()
+  let y = -1
+  while y == -1
+    let encstring = "#koi8-r#cp1251#8bit-cp866#utf-8#ucs-2le#"
+    let x = match(encstring,"#",b:encindex)
+    let y = match(encstring,"#",x+1)
+    let b:encindex = x+1
+    if y == -1
+      let b:encindex = 0
+    else
+      let str = strpart(encstring,x+1,y-x-1)
+      return ":e ++enc=".str
+    endif
+  endwhile
+endfunction
+
+" <Shift+F8> Force file encoding for open (encoding = fileencoding)
+map <S-F8>	:execute ForceRotateEnc()<CR>
+vmap <S-F8>	<C-C><S-F8>
+imap <S-F8>	<C-O><S-F8>
+let b:encindex=0
+function! ForceRotateEnc()
+  let y = -1
+  while y == -1
+    let encstring = "#koi8-r#cp1251#8bit-cp866#utf-8#ucs-2le#"
+    let x = match(encstring,"#",b:encindex)
+    let y = match(encstring,"#",x+1)
+    let b:encindex = x+1
+    if y == -1
+      let b:encindex = 0
+    else
+      let str = strpart(encstring,x+1,y-x-1)
+      :execute "set encoding=".str
+      return ":e ++enc=".str
+    endif
+  endwhile
+endfunction
+
+" <Ctrl+F8> File encoding for save (convert)
+map <C-F8>	:execute RotateFEnc()<CR>
+vmap <C-F8>	<C-C><C-F8>
+imap <C-F8>	<C-O><C-F8>
+let b:fencindex=0
+function! RotateFEnc()
+  let y = -1
+  while y == -1
+    let encstring = "#koi8-r#cp1251#8bit-cp866#utf-8#ucs-2le#"
+    let x = match(encstring,"#",b:fencindex)
+    let y = match(encstring,"#",x+1)
+    let b:fencindex = x+1
+    if y == -1
+      let b:fencindex = 0
+    else
+      let str = strpart(encstring,x+1,y-x-1)
+      return ":set fenc=".str
+    endif
+  endwhile
+endfunction
+
+set statusline=%<%f%h%m%r%=format=%{&fileformat}\ file=%{&fileencoding}\ enc=%{&encoding}\ %b\ 0x%B\ %l,%c%V\ %P
+set laststatus=2
+
+map ё `
+map й q
+map ц w
+map у e
+map к r
+map е t
+map н y
+map г u
+map ш i
+map щ o
+map з p
+map х [
+map ъ ]
+map ф a
+map ы s
+map в d
+map а f
+map п g
+map р h
+map о j
+map л k
+map д l
+map ж ;
+map э '
+map я z
+map ч x
+map с c
+map м v
+map и b
+map т n
+map ь m
+map б ,
+map ю .
+map . /
+
+map Ё ~
+map Й Q
+map Ц W
+map У E
+map К R
+map Е T
+map Н Y
+map Г U
+map Ш I
+map Щ O
+map З P
+map Х {
+map Ъ }
+map Ф A
+map Ы S
+map В D
+map А F
+map П G
+map Р H
+map О J
+map Л K
+map Д L
+map Ж :
+map Э "
+map Я Z
+map Ч X
+map С C
+map М V
+map И B
+map Т N
+map Ь M
+map Б <
+map Ю >
+map , ?
