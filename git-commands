@@ -1,6 +1,6 @@
-1
+#1
 #############################
-# create repo
+# create repo		    #
 #############################
 
 git init
@@ -49,10 +49,10 @@ git format-patch origin/master --stdout > ../my_extraversion.patch
 cat .git/HEAD
 # to determine what branch i am
 
-2
-#################################
-# working with commits and versions
-#################################
+#2
+####################################
+# working with commits and versions#
+####################################
 
 git clone git://github.com/someproject.git
 cd someproject
@@ -74,6 +74,7 @@ git log --since=2.weeks
 git commit -m 'initial commit'
 git add forgotten_file
 git commit --amend
+git push origin master --force
 # add fotgotten file to early commit
 
 git reset HEAD file_name
@@ -102,9 +103,10 @@ git remote rm rm_name
 # rename rmote repo
 # remove remote repo
 
+#3
 #############################################
-# tags
-# ###########################################
+# tags					    #
+#############################################
 
 git tag
 # view tags
@@ -126,10 +128,15 @@ git push origin --tags
 
 
 
+#4
+#############################################
+# branches				    #
+#############################################
 
+git stash
+git checkout -b new_branch
+git stash pop
+git add *
+git commit -m 'new branch'
+#hide changes, create branch, pop changes in new branch, commit changes
 
-
-#remove file from repo and commit
-git commit --amend
-#remove file from commit list
-git push origin master --force
