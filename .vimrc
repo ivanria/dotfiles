@@ -233,6 +233,19 @@ endfunction
 set statusline=%<%f%h%m%r%=format=%{&fileformat}\ file=%{&fileencoding}\ enc=%{&encoding}\ %b\ 0x%B\ %l,%c%V\ %P
 set laststatus=2
 
+""""""""""""""""""""""""""
+"disble arrow keys in vim"
+""""""""""""""""""""""""""
+map <silent> <up>       <nop>
+map <silent> <down>     <nop>
+map <silent> <left>     <nop>
+map <silent> <right>    <nop>
+
+imap <silent> <up>       <nop>
+imap <silent> <down>     <nop>
+imap <silent> <left>     <nop>
+imap <silent> <right>    <nop>
+
 map ё `
 map й q
 map ц w
