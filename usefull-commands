@@ -110,3 +110,5 @@ du - disk usage
 tee # read from standard input and write to standard output and files
 
 aptitude search package_name|sed -n '/^i *./p'|sed 's/^i   //'|sed 's/^i A //'|sed 's/ *- .*//' #cut all from aptitude output without package names
+
+./checkpatch.pl --no-tree -f sourcefile.c #check file for kernel style
