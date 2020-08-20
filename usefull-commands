@@ -97,7 +97,7 @@ bg - run jobs in the background
 help bg
 help fg
 help jobs
-help disown
+help disown #detach process from terminal
 man bash
 info bash
 
