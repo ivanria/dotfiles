@@ -112,3 +112,18 @@ tee # read from standard input and write to standard output and files
 aptitude search package_name|sed -n '/^i *./p'|sed 's/^i   //'|sed 's/^i A //'|sed 's/ *- .*//' #cut all from aptitude output without package names
 
 ./checkpatch.pl --no-tree -f sourcefile.c #check file for kernel style
+
+(printf "PERMISSIONS LINKS OWNER GROUP SIZE MONTH DAY HH:MM PROG-NAME\n" ; ls -l | sed 1d) | column -t #print by columns
+
+colrm 2 4 <filename #remove the second through fourth character from each line of text file "filename"
+
+nl < .vimrc #inserts numbers of non blanc line
+
+pr filename #prepare for printing file "filename" and put it to stdout
+
+read -a list < <( od -Ad -w24 -t u2 /dev/urandom ) # list is array of random numbers
+
+head -c1 /dev/urandom | od -N 1 -i | awk '{ print $2 }' #generate 1 random number
+
+
+for i in $(seq 0 $(( "${#GROUPS[@]}" - 1 )) ); do echo ${GROUPS[$i]} ; done #prints numbers of groups in which the user is included
