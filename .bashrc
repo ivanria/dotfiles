@@ -4,7 +4,10 @@
 if [[ $TERM == "xterm" ]] ; then
 	export TERM=xterm-256color
 fi
+
 export EDITOR=vim
+export PAGER='less -+i'
+
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
