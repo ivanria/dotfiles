@@ -127,3 +127,10 @@ head -c1 /dev/urandom | od -N 1 -i | awk '{ print $2 }' #generate 1 random numbe
 
 
 for i in $(seq 0 $(( "${#GROUPS[@]}" - 1 )) ); do echo ${GROUPS[$i]} ; done #prints numbers of groups in which the user is included
+
+for pic in *"$infmt"; do echo "$pic"; ls "${pic}" | sed -e s/\.$infmt// ; p2=$(ls "$pic" | sed -e s/\.$infmt//); echo "${pic} ${p2}.${outfmt}"; done #change file extension from $infmt to $outfmt
+
+diff -Naur standard_moodle my_moodle > patch.diff
+patch -p1 < patch.diff
+
+
