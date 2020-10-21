@@ -103,6 +103,10 @@ git remote rm rm_name
 # rename rmote repo
 # remove remote repo
 
+git fetch --all
+git reset --hard origin/master
+#reset all local changes
+
 #3
 #############################################
 # tags					    #
@@ -140,3 +144,7 @@ git add *
 git commit -m 'new branch'
 #hide changes, create branch, pop changes in new branch, commit changes
 
+git branch -d localBranchName
+git push origin --delete remoteBranchName
+#delete local branch
+#delete remote branch

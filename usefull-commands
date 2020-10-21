@@ -20,8 +20,6 @@ echo 1 > /proc/sys/vm/drop_caches && sync && echo 2 > /proc/sys/vm/drop_caches &
 
 
 iostat slabtop 
-find ./ | cpio -H newc -o > /boot/new-initrd.cpio
-cpio -idmv < file_name
 
 # ifconfig eth0 ${IP_ADDR} broadcast ${BROADCAST} netmask ${NETMASK} up
 route add default gw ${GATEWAY}
@@ -61,10 +59,26 @@ find . \( -newer %filename1 \) -and \( ! -newer %filename2 \)
 
 #redirect and merge stderr into stdout
 date > file 2>$1
+exec >filename #redirect stdout from all command of the script to "filename"
 
+n<&- #close input file descriptor n
+0<&-, <&- #close stdin
+n>&- #close output file descriptor n
+1>&-, >&- #close stdout
+
+#############################################
+exec 6<&0 #lonk file descriptor #6 with stdin
+exec < data-file
+
+read s1 #read first line from data-file
+read s2 #read second line from data-file
+
+exec 0<&6 6<&- #restore stdin from fd 6 and close fd 6 to free it for system
+#############################################
 
 #Search  the  short  descriptions  and  manual  page names for the keyword printf as regular #expression.
 man -k keyword
+man -a intro #show all section where the "intro" is exest
 
 
 #output the first part of file
@@ -130,7 +144,14 @@ for i in $(seq 0 $(( "${#GROUPS[@]}" - 1 )) ); do echo ${GROUPS[$i]} ; done #pri
 
 for pic in *"$infmt"; do echo "$pic"; ls "${pic}" | sed -e s/\.$infmt// ; p2=$(ls "$pic" | sed -e s/\.$infmt//); echo "${pic} ${p2}.${outfmt}"; done #change file extension from $infmt to $outfmt
 
-diff -Naur standard_moodle my_moodle > patch.diff
-patch -p1 < patch.diff
+diff -Naur standard_moodle my_moodle > difference.patch 
+patch -p1 < new_version.patch
 
 
+NOTES
+       This program is mostly obsolete.  Replacement for netstat is  ss.   Re‐
+       placement for netstat -r is ip route.  Replacement for netstat -i is ip
+       -s link.  Replacement for netstat -g is ip maddr.
+
+
+sed -n '/#START#/,/#END#/p' #print all lines between #START# and #END#
