@@ -1,6 +1,9 @@
 ###macro###
 gcc -E test.c
 
+###expand macro in a specific file###
+echo '#include <netinet/in.h>' | gcc -E - | less
+
 ###headers###
 gcc -H source.c -- list of all included headers
 
