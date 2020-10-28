@@ -153,5 +153,9 @@ NOTES
        placement for netstat -r is ip route.  Replacement for netstat -i is ip
        -s link.  Replacement for netstat -g is ip maddr.
 
+netstat -putna #all tcp connections
+
+ss -l -p -n | egrep 'tcp|udp' #show opened ports
+
 
 sed -n '/#START#/,/#END#/p' #print all lines between #START# and #END#
