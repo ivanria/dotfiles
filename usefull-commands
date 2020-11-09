@@ -54,8 +54,7 @@ bzip2 -z archeve.tar  #result file is archeve.tar.bz2
 
 #search files which was later date of change than %filename1,
 #and files which was earlier date of change than %filename2
-find . \( -newer %filename1 \) -and \( ! -newer %filename2 \)
-
+find /  -not \( -path /root -prune \) -not \( -path /proc -prune \) -not \( -path /sys -prune \) -not \( -path /tmp -prune \) -not \( -path /boot -prune \) -not \( -path /run -prune \) -not \( -path /home -prune \) -not \( -path /media -prune \) -not \( -path /mnt -prune \) -and \( -newer /root/time1 \) -and \( ! -newer /root/time2 \)
 
 #redirect and merge stderr into stdout
 date > file 2>$1
@@ -159,3 +158,9 @@ ss -l -p -n | egrep 'tcp|udp' #show opened ports
 
 
 sed -n '/#START#/,/#END#/p' #print all lines between #START# and #END#
+
+### to view installed files of certain package
+dpkg-query -L <package-name>
+dpkg-deb -c /var/cache/apt/archives/package-name.deb
+apt-file list <package-name>
+
