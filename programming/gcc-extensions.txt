@@ -1,3 +1,9 @@
+###canceling -Wstringop-truncation diagnostic###
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+    strncpy(d, s, 32);
+#pragma GCC diagnostic pop
+
 ###macro###
 gcc -E test.c
 

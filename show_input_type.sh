@@ -6,7 +6,7 @@ function show_input_type()
 }
 
 show_input_type "$1"
-echo "Input" | show_input_type
+#echo "Input" | show_input_type
 
 exit
 
