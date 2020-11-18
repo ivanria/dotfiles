@@ -164,3 +164,5 @@ dpkg-query -L <package-name>
 dpkg-deb -c /var/cache/apt/archives/package-name.deb
 apt-file list <package-name>
 
+### scp check destination folder is exist and copy ti this folder
+scp sourcefile username@ip.address:'`[ -d /dest/dir ] || mkdir -p /dest/dir`/dest/dir/destfile'
