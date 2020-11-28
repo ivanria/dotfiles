@@ -81,8 +81,8 @@ if $TERM == "xterm-256color"
 	set t_Co=256
 endif
 
-nnoremap tj :tabnext<CR> 
-nnoremap tk :tabprev<CR> 
+nnoremap tk :tabnext<CR> 
+nnoremap tj :tabprev<CR> 
 nnoremap <C-t> :tabnew<CR>
 
 "color default
