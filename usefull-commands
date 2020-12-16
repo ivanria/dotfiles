@@ -166,3 +166,6 @@ apt-file list <package-name>
 
 ### scp check destination folder is exist and copy ti this folder
 scp sourcefile username@ip.address:'`[ -d /dest/dir ] || mkdir -p /dest/dir`/dest/dir/destfile'
+
+### snat ###
+iptables -t nat -A POSTROUTING -o $LAN_IFACE -j SNAT --to-source $INET_IP
