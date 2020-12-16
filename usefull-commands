@@ -169,3 +169,4 @@ scp sourcefile username@ip.address:'`[ -d /dest/dir ] || mkdir -p /dest/dir`/des
 
 ### snat ###
 iptables -t nat -A POSTROUTING -o $LAN_IFACE -j SNAT --to-source $INET_IP
+
