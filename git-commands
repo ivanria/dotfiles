@@ -3,6 +3,9 @@
 # create repo		    #
 #############################
 
+git remote set-url origin git@github.com:ivanria/dotfiles.git
+#prepare rep for ssh authentication
+
 git init
 #create repo
 
