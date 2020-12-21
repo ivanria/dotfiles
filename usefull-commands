@@ -1,152 +1,216 @@
-##### change virtual terminal
+### change virtual terminal ###
 chvt 1 or 7
+############################
 
+### trace process ###
 strace ls 2>&1 | tee log ##### redirect stderr and stdout to pipe tee write stdin on console and to the file
+###########################
 
 
+### download site ###
 wget --recursive --no-clobber --page-requisites --html-extension --convert-links --restrict-file-names=unix,ascii --domains opennet.ru --no-parent http://site.com/doc/ ############ download website
+#########################
 
+### cpio archive ###
 cpio -idmv < initrd-file
 find ./ | cpio -H newc -o > /boot/new-initrd.cpio ###### create cpio archive
+###############################
 
-#reqursive substitude
+### reqursive substitude ###
 find -type f -name \*.h  -exec sed -i -r 's/server\.h"/net\.h"/g' {} \;
+##############################
 
-####memory
+### memory ###
 cat /proc/meminfo
 cat /proc/sys/vm/swappiness
+####################################
 
+### drop all cach ###
 echo 1 > /proc/sys/vm/drop_caches && sync && echo 2 > /proc/sys/vm/drop_caches && sync && echo 3 > /proc/sys/vm/drop_caches && sync && free -h
+#####################################
 
 
+### io statistic and information about kernel slab ###
 iostat slabtop 
+################################
 
-# ifconfig eth0 ${IP_ADDR} broadcast ${BROADCAST} netmask ${NETMASK} up
+### ifconfig eth0 ${IP_ADDR} broadcast ${BROADCAST} netmask ${NETMASK} up ###
 route add default gw ${GATEWAY}
+################################
 
-#find . -name \*.c | xargs grep '^function'
+### find . -name \*.c | xargs grep '^function' ###
 find . -type f -exec sh -c 'f={}; #created variables with finded filename
 find . -exec grep -H -n 'hello' {} \;  #Hn it is filename and number of string
 grep -nHe ^xalloc_die -r .
+##################################
 
-#awk
+### awk ###
 echo "username=DefUser2; PRNT=HP:0111020202=yes; HP:0s0dw33333=no; SCAN=HP:0999695444; FLASH=Kingston:5B651F00047B=rw;JetFlash:26HJQV7I57QG86CB=ro;" |  awk -F";"                          '{ for (i=1; i<=NF; i++) { if ($i ~ "username=.*") { print $i } } }' | sed 's/username=//'
+##################################
 
-#unarchive
-bzip2 -cd filename.tar.bz2 | tar -xvf -
-
-
-#print used space on mounted volume
+### print used space on mounted volume ###
 df
+##################################
 
 
-#get or set hard disks parameters
+### get or set hard disks parameters ###
 hdparm
+##################################
 
 
-#what file is opened on filesystem
+### what file is opened on filesystem ###
 fuser -mv /mount_point
+###################################
 
-
-#concatenate and compress files
+### unarchive ###
+bzip2 -cd filename.tar.bz2 | tar -xvf -
+### concatenate and compress files ###
 tar -c * > archeve.tar
 bzip2 -z archeve.tar  #result file is archeve.tar.bz2
+##################################
 
-#search files which was later date of change than %filename1,
-#and files which was earlier date of change than %filename2
+#search files which was later date of change than %filename1, ###
+### and files which was earlier date of change than %filename2 ###
 find /  -not \( -path /root -prune \) -not \( -path /proc -prune \) -not \( -path /sys -prune \) -not \( -path /tmp -prune \) -not \( -path /boot -prune \) -not \( -path /run -prune \) -not \( -path /home -prune \) -not \( -path /media -prune \) -not \( -path /mnt -prune \) -and \( -newer /root/time1 \) -and \( ! -newer /root/time2 \)
+###################################
 
-#redirect and merge stderr into stdout
+### redirect and merge stderr into stdout ###
 date > file 2>$1
 exec >filename #redirect stdout from all command of the script to "filename"
+####################################
 
+### operation with fd ###
 n<&- #close input file descriptor n
 0<&-, <&- #close stdin
 n>&- #close output file descriptor n
 1>&-, >&- #close stdout
+#############################
 
 #############################################
 exec 6<&0 #lonk file descriptor #6 with stdin
 exec < data-file
+#############################################
 
+### read from stdin or file and put it to var ${REPLY} ###
 read s1 #read first line from data-file
 read s2 #read second line from data-file
 
+### restore stdin and close fd 6 ###
 exec 0<&6 6<&- #restore stdin from fd 6 and close fd 6 to free it for system
 #############################################
 
-#Search  the  short  descriptions  and  manual  page names for the keyword printf as regular #expression.
+### Search  the  short  descriptions  and  manual  page names for the keyword printf as regular #expression. ###
 man -k keyword
 man -a intro #show all section where the "intro" is exest
+###############################################
 
-
-#output the first part of file
+### output the first part of file (head) end of file (tail) ###
 head
+tail
+#############################
 
-
-# cut - remove sections from each line of files
+### cut - remove sections from each line of files ###
 cut
+################################
 
-
-# tr - translate or delete characters
+### tr - translate or delete characters ###
 tr
+################################
 
-# whatis whereis which
+### whatis whereis which ###
 whatis    whereis   which
+#############################
 
 
-#nmap - Network exploration tool and security / port scanner
+### nmap - Network exploration tool and security / port scanner ###
 nmap -sT server.example.com    # will be scanning port from 0 to 1024
 nmap -O -sV server.example.com    # will be scanning ports and detect operation sistem
+###################################
 
-
+### information from obj file ###
 objdump
+#######################################
+
+### run as command in bash their argument ###
 xargs
+###################################
 
-lsof -p
+### list files which lock by PID ###
+lsof -p "${PID}"
+#################################
 
+### manipulate jobs ###
 bg - run jobs in the background
-
 help bg
 help fg
 help jobs
 help disown #detach process from terminal
 man bash
 info bash
+###################################
 
+### detach bg job from terminal ###
 dtach
+#################################
 
+### immune to SIGHUP signal ###
 nohup - run a command immune to hangups, with output to a non-tty
+##################################
 
+### disk usage ###
 du - disk usage
+##################################
 
+### write to file and stdout ###
 tee # read from standard input and write to standard output and files
+##################################
 
+### installed package names ###
 aptitude search package_name|sed -n '/^i *./p'|sed 's/^i   //'|sed 's/^i A //'|sed 's/ *- .*//' #cut all from aptitude output without package names
+####################################
 
+### prepare file to kernel patch ###
 ./checkpatch.pl --no-tree -f sourcefile.c #check file for kernel style
+###################################
 
+### ls -l as column ###
 (printf "PERMISSIONS LINKS OWNER GROUP SIZE MONTH DAY HH:MM PROG-NAME\n" ; ls -l | sed 1d) | column -t #print by columns
+#####################################
 
+### remove 2 to 4 char from each line ###
 colrm 2 4 <filename #remove the second through fourth character from each line of text file "filename"
+##################################
 
+### set number of lines ###
 nl < .vimrc #inserts numbers of non blanc line
+#################################
 
+### prepare file for printing ###
 pr filename #prepare for printing file "filename" and put it to stdout
+######################################
 
+### read list as array of random digits ###
 read -a list < <( od -Ad -w24 -t u2 /dev/urandom ) # list is array of random numbers
+##############################
 
+### generate random digit ###
 head -c1 /dev/urandom | od -N 1 -i | awk '{ print $2 }' #generate 1 random number
+########################################
 
-
+### print groups in USER is included ###
 for i in $(seq 0 $(( "${#GROUPS[@]}" - 1 )) ); do echo ${GROUPS[$i]} ; done #prints numbers of groups in which the user is included
+###########################################
 
+### changne file format ###
 for pic in *"$infmt"; do echo "$pic"; ls "${pic}" | sed -e s/\.$infmt// ; p2=$(ls "$pic" | sed -e s/\.$infmt//); echo "${pic} ${p2}.${outfmt}"; done #change file extension from $infmt to $outfmt
+##################################
 
+### patch create and apply ###
 diff -Naur standard_moodle my_moodle > difference.patch 
 patch -p1 < new_version.patch
+#################################
 
-
+### replacement obsolete netstat and route commands ###
 NOTES
        This program is mostly obsolete.  Replacement for netstat is  ss.   Re‐
        placement for netstat -r is ip route.  Replacement for netstat -i is ip
@@ -155,18 +219,36 @@ NOTES
 netstat -putna #all tcp connections
 
 ss -l -p -n | egrep 'tcp|udp' #show opened ports
+################################################
 
-
+### sed print lines between START and END ###
 sed -n '/#START#/,/#END#/p' #print all lines between #START# and #END#
+##########################################
 
 ### to view installed files of certain package
 dpkg-query -L <package-name>
 dpkg-deb -c /var/cache/apt/archives/package-name.deb
 apt-file list <package-name>
+#############################
 
 ### scp check destination folder is exist and copy ti this folder
 scp sourcefile username@ip.address:'`[ -d /dest/dir ] || mkdir -p /dest/dir`/dest/dir/destfile'
+#################################################
 
-### snat ###
-iptables -t nat -A POSTROUTING -o $LAN_IFACE -j SNAT --to-source $INET_IP
+### first syslog record at boot time ###
+kernel: [    0.000000] #in vim search: kernel: [    0.000000\]
+################################################
+
+### ssh vpn local settings ###
+ ip link set dev tun100 up
+ ip addr add 192.168.0.2/24 dev tun100
+ ip route add "${ssh_server_ip}" via 192.168.1.1 dev wlo1
+ ip route del default via 192.168.1.1 dev wlo1
+ ip route add default via 192.168.0.1 dev tun100
+### ssh vpn remote settings ###
+ ip link set dev tun100 up
+ ip addr add 192.168.0.1/24 dev tun100
+iptables -t nat -A POSTROUTING -s 192.168.0.2/32 -j SNAT --to-source "${uoter_ip}"
+echo 1 > /proc/sys/net/ipv4/ip_forward
+######################################
 
