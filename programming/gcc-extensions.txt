@@ -46,7 +46,7 @@ $ gdb executablefile
 (gdb) r arg1 arg2 arg3
 after start press bt - back trace
 
-(gdb) where #seethe stack
+(gdb) where #see the stack
 (gdb) up 2 #up to #2 number of the stack
 
 ddd -- it is visual gdb
