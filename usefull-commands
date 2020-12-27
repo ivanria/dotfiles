@@ -65,6 +65,7 @@ fuser -mv /mount_point
 ### unarchive ###
 bzip2 -cd filename.tar.bz2 | tar -xvf -
 ### concatenate and compress files ###
+tar cfJ arch.tar.xz files_to_archive #create xz archive
 tar -c * > archeve.tar
 bzip2 -z archeve.tar  #result file is archeve.tar.bz2
 ##################################

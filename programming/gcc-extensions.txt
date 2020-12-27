@@ -46,6 +46,9 @@ $ gdb executablefile
 (gdb) r arg1 arg2 arg3
 after start press bt - back trace
 
+(gdb) where #seethe stack
+(gdb) up 2 #up to #2 number of the stack
+
 ddd -- it is visual gdb
 gdb ./a.out
 (gdb) break main #or any other function
@@ -53,6 +56,7 @@ next ---- next step, cannot enter the libc functions
 step ---- stepi like but work in function
 print var - show variable
 print *arr@len - print array
+print argv[1] - print first argumet passed to the program
 display $expression - show value of expression on every step
 ulimit -c unlimit - create core dump per fail process
 To print the variables use "print varibale-name" or " p varibale-name"
