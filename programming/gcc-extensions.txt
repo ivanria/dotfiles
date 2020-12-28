@@ -1,3 +1,25 @@
+###create shared object lib*.so###
+gcc -c -fPIC test1.c
+gcc -c -fPIC test2.c
+gcc -shared -fPIC -o libtest.so test1.o test2.o
+###linking with shared object###
+gcc -o test test.o -L. -ltest
+###static linking###
+gcc -static -o test test.o -L. -ltest
+
+###compiling an app with a predefined path of shared objects###
+gcc -o app app.o -L. ltest -Wl,-rpath,/usr/local/lib
+###another way###
+export LD_LIBRARY_PATH=/usr/local/lib:/opt/lib:/usr/lib
+###yet another way###
+gcc -c $(pkgconfig --cflags) -o test.o test.c
+gcc -o test test.o $(pkgconfig --ldflags)
+###yet another way###
+void *handle = dlopen("libtest.so", RTLD_LAZY);
+void (*func_ptr)() = dlsym(handle, "test_func");
+(*func_ptr)();
+dlclose (handle);
+
 ###canceling -Wstringop-truncation diagnostic###
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstringop-truncation"
