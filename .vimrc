@@ -113,7 +113,6 @@ set statusline+=%f\
 set statusline+=%h%m%r%w
 set statusline+=\[%{strlen(&ft)?&ft:'none'}]
 set statusline+=%=
-"set statusline+=0x%-8B
 set statusline+=%-14(%l,%c%V%)
 set statusline+=%<%P
 
@@ -230,7 +229,7 @@ function! RotateFEnc()
   endwhile
 endfunction
 
-set statusline=%<%f%h%m%r%=format=%{&fileformat}\ file=%{&fileencoding}\ enc=%{&encoding}\ %b\ 0x%B\ %l,%c%V\ %P
+set statusline=%<%f%h%m%r%=format=%{&fileformat}\ file=%{&fileencoding}\ enc=%{&encoding}\ %l,%c%V\ %P
 set laststatus=2
 
 """"""""""""""""""""""""""
