@@ -220,6 +220,7 @@ NOTES
 netstat -putna #all tcp connections
 
 ss -l -p -n | egrep 'tcp|udp' #show opened ports
+ss -aenp
 ################################################
 
 ### sed print lines between START and END ###
