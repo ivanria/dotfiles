@@ -93,3 +93,9 @@ as -o test.o test.s
 ld --oformat binary -Ttext 7c00 -o test test.o - -Ttext -Tbss -Tdata is origin
 to text, bss, data --section-start=sectionname=org like a -Ttext
 gcc -S -dp -- comments in assembly
+
+###IPC###
+ipcs -m #shows shared memory segments
+ipcrm shm 1627649 #delete shared memory segments shown in prev command
+ipcs -s #display semaphores
+ipcrm sem 5790517 #delete semaphor shown in prev command
