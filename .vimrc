@@ -5,6 +5,7 @@
 ":ls list buffers :bunload! N :bdel! N delete buffer number N
 ":new to open new window :sp for same file in two window :vnew for vertical new window
 ":resize 10 to resize of 10 lines horizontal :vertical resize 10 to resize of 10 vertically lines
+"'. or CTRL+O  jump to last modification line
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "macros - press qa to start record macross named "a"
 "doing some things
