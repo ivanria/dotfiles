@@ -38,8 +38,31 @@ if has("cscope")
     set csto=0
 
     " add any cscope database in current directory
-    if filereadable("cscope.out")
-        cs add cscope.out  
+    let FP7 = "/FastPath-SMB-esw-bcm5615x-iproc_wolf-BL36UCR-CLS-AQHS-src-7"
+    let FP8 = "/FastPath-SMB-esw-bcm5615x-iproc_wolf-BL36UCR-CLS-AQ-src-new"
+    let CWD = getcwd()
+
+    if FP7 == CWD
+	    let fpcscope_dir = $HOME . "/cscope-7/"
+	    "echo fpcscope_dir
+    elseif FP8 == CWD
+	    let fpcscope_dir = $HOME . "/cscope-8/"
+	    "echo fpcscope_dir
+    else
+	    let fpcscope_dir = $HOME . "/cscope/"
+	    "echo fpcscope_dir
+    endif
+
+    let fpcscope_file = fpcscope_dir . "cscope.out"
+
+"    if filereadable(fpcscope_file)
+"	    echo "file" . fpcscope_file . "is readeble"
+"    else
+"	    echo "bad"
+"    endif
+
+    if filereadable(fpcscope_file)
+        execute "cs" "add" fpcscope_file
     " else add the database pointed to by environment variable 
     elseif $CSCOPE_DB != ""
         cs add $CSCOPE_DB
@@ -88,32 +111,32 @@ if has("cscope")
     " go back to where you were before the search.  
     "
 
-    nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>	
-    nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-    nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-\>s :tab cs find s <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-\>g :tab cs find g <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-\>c :tab cs find c <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-\>t :tab cs find t <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-\>e :tab cs find e <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-\>f :tab cs find f <C-R>=expand("<cfile>")<CR><CR>	
+    nmap <C-\>i :tab cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    nmap <C-\>d :tab cs find d <C-R>=expand("<cword>")<CR><CR>	
 
 
     " Using 'CTRL-spacebar' (intepreted as CTRL-@ by vim) then a search type
     " makes the vim window split horizontally, with search result displayed in
     " the new window.
     "
-    " (Note: earlier versions of vim may not have the :scs command, but it
+    " (Note: earlier versions of vim may not have the :tab scs command, but it
     " can be simulated roughly via:
-    "    nmap <C-@>s <C-W><C-S> :cs find s <C-R>=expand("<cword>")<CR><CR>	
+    "    nmap <C-@>s <C-W><C-S> :tab cs find s <C-R>=expand("<cword>")<CR><CR>	
 
-    nmap <C-@>s :scs find s <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-@>g :scs find g <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-@>c :scs find c <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-@>t :scs find t <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-@>e :scs find e <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-@>f :scs find f <C-R>=expand("<cfile>")<CR><CR>	
-    nmap <C-@>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>	
-    nmap <C-@>d :scs find d <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-@>s :tab scs find s <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-@>g :tab scs find g <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-@>c :tab scs find c <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-@>t :tab scs find t <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-@>e :tab scs find e <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-@>f :tab scs find f <C-R>=expand("<cfile>")<CR><CR>	
+    nmap <C-@>i :tab scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>	
+    nmap <C-@>d :tab scs find d <C-R>=expand("<cword>")<CR><CR>	
 
 
     " Hitting CTRL-space *twice* before the search type does a vertical 
@@ -159,7 +182,9 @@ if has("cscope")
     " timeoutlent (default: 1000 = 1 second, which is sluggish) is used.
     "
     "set ttimeoutlen=100
+    nmap <F12> :exe '!find' CWD '-name \*.c -o -name \*.cpp -o -name \*.h -o -name \*.hpp -o -name \*.y -o -name \*.l > ' fpcscope_dir . 'cscope.files'<CR>
+      \:exe '!cd ' fpcscope_dir '&& cscope -b -q' <CR>
+      \:cs reset<CR>
 
 endif
-
 

@@ -85,7 +85,7 @@ endif
 
 nnoremap tk :tabnext<CR> 
 nnoremap tj :tabprev<CR> 
-nnoremap <C-t> :tabnew<CR>
+"nnoremap <C-t> :tabnew<CR>
 
 "color default
 set scrolloff=999 "cursor on meddle alvays
