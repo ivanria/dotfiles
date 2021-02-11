@@ -66,8 +66,9 @@
 "to load session wheen run vim
 "vim -S ~/mysession.vim
 """"""""""""""""""""""""""""""""""""""""""
-"cscope: create ~/cscope directory, then cd ~/cscope and
-"find "project_dir" -name \*.c -o -name \*.h -o -name \*.y -o -name \*.l > cscope.files
+"cscope: 
+"cd / && find "$project_dir" -name \*.c -o -name \*.h -o -name \*.y -o -name \*.l > "${project_dir}/cscope.files"
+"cd "$project_dir" && cscope -b && vim (within vim run ":cs add cscope.out"
 "in project dir run vim -t main
 "or in source code press ctrl+spacebar and press s
 """""""""""""""""""""""""""""""""""""""""
