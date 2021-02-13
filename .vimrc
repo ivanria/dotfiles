@@ -83,6 +83,14 @@ if $TERM == "xterm-256color"
 	set t_Co=256
 endif
 
+let g:gutentags_enabled = "1"
+let g:gutentags_modules = ['cscope']
+let g:gutentags_generate_on_new = "1"
+let g:gutentags_generate_on_missing = "1"
+let g:gutentags_generate_on_write = "1"
+let g:gutentags_generate_on_empty_buffer = "1"
+let g:gutentags_trace = "1"
+
 nnoremap tk :tabnext<CR> 
 nnoremap tj :tabprev<CR> 
 "nnoremap <C-t> :tabnew<CR>
@@ -97,8 +105,8 @@ autocmd BufNewFile,BufRead *.hpp source $VIMHOME/extend_files/cpp.vim
 autocmd BufNewFile,BufRead *.cpp source $VIMHOME/extend_files/cpp.vim 
 autocmd BufNewFile,BufRead *.h source $VIMHOME/extend_files/linuxsty.vim 
 autocmd BufNewFile,BufRead *.c source $VIMHOME/extend_files/linuxsty.vim 
-autocmd BufNewFile,BufRead *.h source $VIMHOME/tags_gen.vim 
-autocmd BufNewFile,BufRead *.c source $VIMHOME/tags_gen.vim 
+"autocmd BufNewFile,BufRead *.h source $VIMHOME/tags_gen.vim 
+"autocmd BufNewFile,BufRead *.c source $VIMHOME/tags_gen.vim 
 autocmd BufNewFile *.c so $VIMHOME/extend_files/cheader.txt
 autocmd BufNewFile *.cpp so $VIMHOME/extend_files/cppheader.txt
 autocmd BufNewFile,BufRead *.htm  set cindent shiftwidth=2 tabstop=2 
@@ -232,6 +240,7 @@ function! RotateFEnc()
 endfunction
 
 set statusline=%<%f%h%m%r%=format=%{&fileformat}\ file=%{&fileencoding}\ enc=%{&encoding}\ %l,%c%V\ %P
+set statusline+=%{gutentags#statusline()}
 set laststatus=2
 
 """"""""""""""""""""""""""
