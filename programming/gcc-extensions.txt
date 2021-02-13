@@ -76,9 +76,11 @@ gdb ./a.out
 (gdb) break main #or any other function
 next ---- next step, cannot enter the libc functions
 step ---- stepi like but work in function
+set var_name=value #set value to var_name var
 print var - show variable
 print *arr@len - print array
 print argv[1] - print first argumet passed to the program
+print (int)function_name(argument, second_argument) #print result of funtion
 display $expression - show value of expression on every step
 ulimit -c unlimit - create core dump per fail process
 To print the variables use "print varibale-name" or " p varibale-name"
