@@ -84,10 +84,12 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # some more ls aliases
-alias ll='ls -lh'
+alias ll='ls -lah'
 alias la='ls -lah'
 alias l='ls -CF'
 
+
+#alias man='man -I'
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
@@ -106,7 +108,11 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 ulimit -c unlimited
-#PATH="${PATH}:/usr/java/jre1.6.0/bin"
+PATH="${PATH}:/home/ivr/bin"
 #export PATH="${PATH}/usr/java/jre1.8.0_25/bin:/usr/java/jre1.8.0_25/lib:/usr/java/jre1.8.0_25/man"
 
-#export cflags='-Wall -Wextra -O2 -g -march=atom'
+#export LIBVIRT_DEFAULT_URI='qemu:///system'
+
+#export cflags='-Wall -Wextra -Wpedantic -O2 -g -march=atom'
+
+export HISTSIZE='10000'
