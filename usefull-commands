@@ -264,6 +264,6 @@ ip link set dev $IFACE up
 #on office host need run sshd on port 22
 #on internet host need option PermitTunnel yes
 #run next
-ssh -R 12344:localhost:22 root@internet_host_ip -p12345
+ssh -N -R 12344:localhost:22 root@internet_host_ip -p12345 &
 #om home host to connect to office
 ssh user_on_office_host@internet_host_ip -p12344
