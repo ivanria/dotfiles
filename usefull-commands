@@ -73,6 +73,7 @@ bzip2 -z archeve.tar  #result file is archeve.tar.bz2
 #search files which was later date of change than %filename1, ###
 ### and files which was earlier date of change than %filename2 ###
 find /  -not \( -path /root -prune \) -not \( -path /proc -prune \) -not \( -path /sys -prune \) -not \( -path /tmp -prune \) -not \( -path /boot -prune \) -not \( -path /run -prune \) -not \( -path /home -prune \) -not \( -path /media -prune \) -not \( -path /mnt -prune \) -and \( -newer /root/time1 \) -and \( ! -newer /root/time2 \)
+find . -iname '*cxoffice*' -a -not -path '*.wine/*'
 ###################################
 
 ### redirect and merge stderr into stdout ###
@@ -258,3 +259,11 @@ echo 1 > /proc/sys/net/ipv4/ip_forward
 ip link set dev $IFACE down
 ip link set dev $IFACE address XX:XX:XX:XX:XX:XX
 ip link set dev $IFACE up
+
+### ssh tunnel from office to internet host ###
+#on office host need run sshd on port 22
+#on internet host need option PermitTunnel yes
+#run next
+ssh -R 12344:localhost:22 root@internet_host_ip -p12345
+#om home host to connect to office
+ssh user_on_office_host@internet_host_ip -p12344
