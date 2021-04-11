@@ -1,2 +1,4 @@
 .git
 .vim/undodir/*
+cscope.out*
+.notags
