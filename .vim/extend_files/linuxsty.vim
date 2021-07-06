@@ -13,7 +13,7 @@ set cindent
 :set foldmethod=syntax
 
 if exists("g:loaded_linuxsty")
-    echo "bad!!!!!!"
+    "echo "bad!!!!!!"
     finish
 endif
 let g:loaded_linuxsty = 1
