@@ -7,6 +7,7 @@ fi
 
 export EDITOR=vim
 export PAGER='less -+i'
+export PROMPT_COMMAND="history -a"
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
