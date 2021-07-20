@@ -58,6 +58,23 @@ hdparm
 ##################################
 
 
+### losetup ###
+modprobe -r loop
+modprobe loop max_part=64
+losetup /dev/loop0 ~/sda_backup
+
+ls -l /dev/loop*
+brw-rw--— 1 root disk 7, 0 Apr 4 14:34 /dev/loop0
+brw-rw--— 1 root disk 7, 1 Apr 4 14:34 /dev/loop0p1
+brw-rw--— 1 root disk 7, 5 Apr 4 14:34 /dev/loop0p5
+brw-rw--— 1 root disk 7, 6 Apr 4 14:34 /dev/loop0p6
+brw-rw--— 1 root disk 7, 7 Apr 4 14:34 /dev/loop0p7
+brw-rw--— 1 root disk 7, 8 Apr 4 14:34 /dev/loop0p8
+
+mount /dev/loop0p1 /mnt/part1/
+###################################
+
+
 ### what file is opened on filesystem ###
 fuser -mv /mount_point
 ###################################
