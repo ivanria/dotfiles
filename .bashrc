@@ -108,7 +108,7 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 ulimit -c unlimited
-PATH="${PATH}:/home/ivr/bin"
+#PATH="${PATH}:/home/ivr/bin"
 #export PATH="${PATH}/usr/java/jre1.8.0_25/bin:/usr/java/jre1.8.0_25/lib:/usr/java/jre1.8.0_25/man"
 
 #export LIBVIRT_DEFAULT_URI='qemu:///system'
@@ -116,3 +116,7 @@ PATH="${PATH}:/home/ivr/bin"
 #export cflags='-Wall -Wextra -Wpedantic -O2 -g -march=atom'
 
 export HISTSIZE='10000'
+
+export DOTNET_ROOT="$HOME/dotnet"
+export PATH="${PATH}:${DOTNET_ROOT}"
+export PATH="${PATH}:/opt/cxoffice/bin"
