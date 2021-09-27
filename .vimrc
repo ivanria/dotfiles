@@ -83,6 +83,8 @@ if $TERM == "xterm-256color"
 	set t_Co=256
 endif
 
+set clipboard=unnamedplus
+
 let g:gutentags_enabled = "1"
 let g:gutentags_modules = ['cscope']
 let g:gutentags_generate_on_new = "1"
