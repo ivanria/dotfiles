@@ -85,6 +85,8 @@ endif
 
 set clipboard=unnamedplus
 
+set virtualedit=all
+
 let g:gutentags_enabled = "1"
 let g:gutentags_modules = ['cscope']
 let g:gutentags_generate_on_new = "1"
