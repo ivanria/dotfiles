@@ -85,7 +85,7 @@ endif
 
 set clipboard=unnamedplus
 
-set virtualedit=all
+"set virtualedit=all
 
 let g:gutentags_enabled = "1"
 let g:gutentags_modules = ['cscope']
