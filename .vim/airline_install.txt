@@ -1,0 +1,26 @@
+total 12K
+autoload
+drwxr-xr-x 3 ivr ivr   80 Jan 20 17:47 .
+drwxr-xr-x 8 ivr ivr  300 Jan 20 17:49 ..
+drwxr-xr-x 5 ivr ivr  320 Jan 20 17:47 airline
+-rw-r--r-- 1 ivr ivr 9.0K Jan 20 17:47 airline.vim
+total 12K
+plugin
+drwxr-xr-x 2 ivr ivr   60 Jan 20 17:49 .
+drwxr-xr-x 8 ivr ivr  300 Jan 20 17:49 ..
+-rw-r--r-- 1 ivr ivr 9.2K Jan 20 17:47 airline.vim
+total 48K
+drwxr-xr-x 2 ivr ivr  260 Jan 20 17:47 .
+drwxr-xr-x 8 ivr ivr  300 Jan 20 17:49 ..
+t
+-rw-r--r-- 1 ivr ivr 2.4K Jan 20 17:47 airline.vim
+-rw-r--r-- 1 ivr ivr 3.5K Jan 20 17:47 builder.vim
+-rw-r--r-- 1 ivr ivr 1.3K Jan 20 17:47 commands.vim
+-rw-r--r-- 1 ivr ivr 1.6K Jan 20 17:47 extensions_default.vim
+-rw-r--r-- 1 ivr ivr 1.4K Jan 20 17:47 extensions_tabline.vim
+-rw-r--r-- 1 ivr ivr 1.2K Jan 20 17:47 highlighter.vim
+-rw-r--r-- 1 ivr ivr 4.1K Jan 20 17:47 init.vim
+-rw-r--r-- 1 ivr ivr 1.6K Jan 20 17:47 parts.vim
+-rw-r--r-- 1 ivr ivr 2.9K Jan 20 17:47 section.vim
+-rw-r--r-- 1 ivr ivr 2.8K Jan 20 17:47 themes.vim
+-rw-r--r-- 1 ivr ivr 1.7K Jan 20 17:47 util.vim

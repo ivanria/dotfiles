@@ -96,7 +96,7 @@ let g:gutentags_generate_on_empty_buffer = "1"
 let g:gutentags_cscope_build_inverted_index = "1"
 "let g:gutentags_exclude_filetypes = ['out']
 let g:gutentags_file_list_command = 'find . -type f -a \( -name "*.c" -o -name "*.h" -o -name "*.y" -o -name "*.l" -o -name Makefile \) -a -not -name "cscope.*" -a -not \( -path "*/.git/*" -prune \)'
-let g:gutentags_trace = "1"
+let g:gutentags_trace = "0"
 
 nnoremap tk :tabnext<CR> 
 nnoremap tj :tabprev<CR> 
@@ -108,6 +108,7 @@ set scrolloff=999 "cursor on meddle alvays
 filetype plugin on
 filetype on
 filetype indent on
+""""""""""file extensions""""""""""
 autocmd BufNewFile,BufRead *.hpp source $VIMHOME/extend_files/cpp.vim 
 autocmd BufNewFile,BufRead *.cpp source $VIMHOME/extend_files/cpp.vim 
 autocmd BufNewFile,BufRead *.h source $VIMHOME/extend_files/linuxsty.vim 
@@ -120,24 +121,25 @@ autocmd BufNewFile,BufRead *.htm  set cindent shiftwidth=2 tabstop=2
 autocmd BufNewFile,BufRead *.html set cindent shiftwidth=2 tabstop=2
 autocmd BufNewFile,BufRead *.py source $VIMHOME/indent/python.vim
 "autocmd BufNewFile,BufRead 
+"""""""""""end of file extensions section""""""""""
 
 command Thtml :%!tidy -utf8 -q -i --show-errors 0
 
-set laststatus=2
-set statusline=
-set statusline+=%-3.3n\
-set statusline+=%f\
-set statusline+=%h%m%r%w
-set statusline+=\[%{strlen(&ft)?&ft:'none'}]
-set statusline+=%=
-set statusline+=%-14(%l,%c%V%)
-set statusline+=%<%P
+""""""""""statusline""""""""""
+"set laststatus=2
+"set statusline=
+"set statusline+=%-3.3n\
+"set statusline+=%f\
+"set statusline+=%h%m%r%w
+"set statusline+=\[%{strlen(&ft)?&ft:'none'}]
+"set statusline+=%=
+"set statusline+=%-14(%l,%c%V%)
+"set statusline+=%<%P
 
-set ruler
-
-set showcmd
-
-set showmode
+"set ruler
+"set showcmd
+"set showmode
+""""""""""end of statusline section""""""""""
 
 set smartcase
 
