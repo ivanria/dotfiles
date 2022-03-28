@@ -284,3 +284,9 @@ ip link set dev $IFACE up
 ssh -N -R 12344:localhost:22 root@internet_host_ip -p12345 &
 #om home host to connect to office
 ssh user_on_office_host@internet_host_ip -p12344
+
+### cross compile ###
+export PATH="/home/ivr/work/buildroot/buildroot-2018.02.4/output_soyuz_new/host/bin:$PATH"
+make CC=arm-linux-gcc
+### cross compile in kernel stile ###
+ARCH=arm CROSS_COMPILE=/usr/bin/arm-linux-gnueabi- make -j10
