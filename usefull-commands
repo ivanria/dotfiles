@@ -240,6 +240,7 @@ NOTES
        -s link.  Replacement for netstat -g is ip maddr.
 
 netstat -putna #all tcp connections
+netstat -tulpn
 
 ss -l -p -n | egrep 'tcp|udp' #show opened ports
 ss -aenp
@@ -294,3 +295,10 @@ export PATH="/home/ivr/work/buildroot/buildroot-2018.02.4/output_soyuz_new/host/
 make CC=arm-linux-gcc
 ### cross compile in kernel stile ###
 ARCH=arm CROSS_COMPILE=/usr/bin/arm-linux-gnueabi- make -j10
+
+# ps aux sort by cpu-utilization
+ps aux --sort cputime
+ps aux --sort -cputime
+ps aux --sort -pcpu
+ps aux --sort -time
+
