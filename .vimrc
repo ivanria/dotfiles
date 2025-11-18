@@ -59,11 +59,11 @@
 " :later 45s
 " :undolist
 """"""""""""""""""""""""""""""""""""""""""
-"Drawit plugin
-":Drawit - start drawing
-"\ds - stop drawing
+" Drawit plugin
+" :Drawit - start drawing
+" \ds - stop drawing
 """"""""""""""""""""""""""""""""""""""""""
-"tabs
+" tabs
 " :tabnew             --- open new tab
 " to move tab to left --- :tabm +1
 " to move tab rigth   --- :tabm -1
@@ -80,6 +80,13 @@
 " Ctrl+W R --- rotate windows right
 " Ctrl+W x --- change two windows places
 """"""""""""""""""""""""""""""""""""""""""
+" tagging
+" set cursor on keyword: for example "main"
+" and press   --- Ctrl+] --- move to function "main" definition
+" :tag "main" --- same as Ctrl+]
+" Ctrl+t      --- move to previous position
+" :tags       --- list previously finded tags
+"""""""""""""""""""""""""""""""""""""""""
 "cscope: 
 "cd / && find "$project_dir" -name \*.c -o -name \*.h -o -name \*.y -o -name \*.l > "${project_dir}/cscope.files"
 "cd "$project_dir" && cscope -b && vim (within vim run ":cs add cscope.out"
@@ -104,6 +111,8 @@ set clipboard=unnamedplus
 "set virtualedit=all
 
 let g:gutentags_enabled = "1"
+let g:gutentags_project_root = ['gutentags_root']
+"I'll check in the future whether it works or not "gutentags_root".
 let g:gutentags_modules = ['cscope']
 let g:gutentags_generate_on_new = "1"
 let g:gutentags_generate_on_missing = "1"
@@ -112,7 +121,7 @@ let g:gutentags_generate_on_empty_buffer = "1"
 let g:gutentags_cscope_build_inverted_index = "1"
 "let g:gutentags_exclude_filetypes = ['out']
 let g:gutentags_file_list_command = 'find . -type f -a \( -name "*.c" -o -name "*.h" -o -name "*.y" -o -name "*.l" -o -name Makefile \) -a -not -name "cscope.*" -a -not \( -path "*/.git/*" -prune \)'
-let g:gutentags_trace = "0"
+let g:gutentags_trace = "1"
 
 nnoremap tk :tabnext<CR> 
 nnoremap tj :tabprev<CR> 
