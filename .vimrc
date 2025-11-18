@@ -1,70 +1,84 @@
-":xa exit from all tabs and windows
-": bufdo bd close all buffers
-"ma set mark named "a" press 'a or `a to jump to mark "a"
-":tabnew create new tab :tabnext next tab
-":ls list buffers :bunload! N :bdel! N delete buffer number N
-":new to open new window :sp for same file in two window :vnew for vertical new window
-":resize 10 to resize of 10 lines horizontal :vertical resize 10 to resize of 10 vertically lines
-"'. or CTRL+O  jump to last modification line
+" :xa                 --- exit from all tabs and windows
+" :bufdo (command)    --- run command in all buffers
+" :ma (name mark)     --- set mark named "a"
+" press "'a" or "`a"  --- to jump to mark "a"
+" :tabnew             --- create new tab :tabnext next tab
+" :ls                 --- list buffers
+" :bunload! N         --- buffer unload
+" :bdel! N            --- delete buffer number N
+" :new                --- to open new window
+" :sp                 --- for same file in two window
+" :vnew               --- for vertical new window
+" :resize 10          --- to resize of 10 lines horizontal
+" :vertical resize 10 --- to resize of 10 vertically lines
+" '. or CTRL+O        --- jump to last modification line
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"macros - press qa to start record macross named "a"
-"doing some things
-"type q to stop recording
-"repeat writing macros type @a where "a" is a name of macross
-"repeat more than one type @a10
-"repeat last move press "." dot
+" macros
+" qa      --- to start record macross named "a"
+"         --- doing some things
+" q       --- to stop recording
+" @a      --- repeat "a" macros
+" @a10    --- repeat "a" macros 10 times 
+" "." dot --- repeat last
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"building programm within vim
-":make build project with Makefile
-":cc jump to error
-":cnext :cprevious next prev error
-"clist list of errors
-":copen open new window with errors
-"Enter on error - jump to corresponding errors in source
-":cclose close widow
+" building programm within vim
+" :make   --- build project with Makefile
+" :cc     --- jump to error
+" :cnext  --- :cprevious next prev error
+" :cprev
+" :clist  --- list of errors
+" :copen  --- open new window with errors
+" Enter on error - jump to corresponding errors in source
+" :cclose --- close widow
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"folding
-":set foldmethod=
-"manusl only manual folding
-"expr blocks fold corresponding of foldexpr value
-"syntax folding corresponding of syntaxis. !!! the most recomended
-"marke folding from markers
+" folding
+" :set foldmethod=
+" manusl --- only manual folding
+" expr   --- blocks fold corresponding of foldexpr value
+" syntax --- folding corresponding of syntaxis. !!! the most recomended
+" marke  --- folding from markers
 """""""""""""""""""""""""
-"folding commands:
-" zo open folder
-" zO open folder recursively
-" zc close fold
-" zC close fold recursively
-" za if open, then close and vice versa
-" zA same as previouse, but recursively
-" zr FOLDLEVEL+=1
-" zR open all folds in file
-" zm FOLDLEVEL-=1
-" zM close all folds in file
+" folding commands:
+" zo --- open folder
+" zO --- open folder recursively
+" zc --- close fold
+" zC --- close fold recursively
+" za --- if open, then close and vice versa
+" zA --- same as previouse, but recursively
+" zr --- FOLDLEVEL+=1
+" zR --- open all folds in file
+" zm --- FOLDLEVEL-=1
+" zM --- close all folds in file
 """"""""""""""""""""""""""""""""""""""""""
-"vimdiff
-"diff obtain
-"diff put
+" vimdiff
+" diff obtain
+" diff put
 """"""""""""""""""""""""""""""""""""""""""
-"undo redo
-":earlier 4m
-":later 45s
-":undolist
+" undo redo
+" :earlier 4m
+" :later 45s
+" :undolist
 """"""""""""""""""""""""""""""""""""""""""
 "Drawit plugin
 ":Drawit - start drawing
 "\ds - stop drawing
 """"""""""""""""""""""""""""""""""""""""""
 "tabs
-"to move tab to left :tabm +1
-"to move tab rigth :tabm -1
-"to move tab to end :tabm
+" :tabnew             --- open new tab
+" to move tab to left --- :tabm +1
+" to move tab rigth   --- :tabm -1
+" to move tab to end  --- :tabm
 """"""""""""""""""""""""""""""""""""""""""
-"vim session
-"to save session :mksession ~/mysession.vim
-"to load session from file :source ~/mysession.vim
-"to load session wheen run vim
-"vim -S ~/mysession.vim
+" vim session
+" to save session           --- :mksession ~/mysession.vim
+" to load session from file --- :source ~/mysession.vim
+" to load session wheen run vim
+"                           --- vim -S ~/mysession.vim
+""""""""""""""""""""""""""""""""""""""""""
+" windows
+" Ctrl+W   --- r rotate windows left
+" Ctrl+W R --- rotate windows right
+" Ctrl+W x --- change two windows places
 """"""""""""""""""""""""""""""""""""""""""
 "cscope: 
 "cd / && find "$project_dir" -name \*.c -o -name \*.h -o -name \*.y -o -name \*.l > "${project_dir}/cscope.files"
@@ -76,6 +90,8 @@
 
 set nocompatible
 syntax on
+
+"set number
 
 let $VIMHOME = $HOME."/.vim"
 
@@ -113,6 +129,7 @@ autocmd BufNewFile,BufRead *.hpp source $VIMHOME/extend_files/cpp.vim
 autocmd BufNewFile,BufRead *.cpp source $VIMHOME/extend_files/cpp.vim 
 autocmd BufNewFile,BufRead *.h source $VIMHOME/extend_files/linuxsty.vim 
 autocmd BufNewFile,BufRead *.c source $VIMHOME/extend_files/linuxsty.vim 
+autocmd BufNewFile,BufRead *.bb set syntax=bitbake
 "autocmd BufNewFile,BufRead *.h source $VIMHOME/tags_gen.vim 
 "autocmd BufNewFile,BufRead *.c source $VIMHOME/tags_gen.vim 
 autocmd BufNewFile *.c so $VIMHOME/extend_files/cheader.txt
