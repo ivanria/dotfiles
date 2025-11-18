@@ -111,7 +111,7 @@ set clipboard=unnamedplus
 "set virtualedit=all
 
 let g:gutentags_enabled = "1"
-let g:gutentags_project_root = ['gutentags_root']
+let g:gutentags_project_root = ['__gutentags_enable_file']
 "I'll check in the future whether it works or not "gutentags_root".
 let g:gutentags_modules = ['cscope']
 let g:gutentags_generate_on_new = "1"
