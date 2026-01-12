@@ -8,7 +8,7 @@ depmod - generating modules.dep
 dmesg - kernel log
 cat /var/log/messages
 nm /path/to/module/name_mod.ko
-nm - names of someone obj or exec file
+nm - GNU nm lists the symbols from object files objfile....
 objdump -t /path/to/module/name_mod.ko - print the symbol table
 readelf -s /path/to/module/name_mod.ko - like a objdump -t
 

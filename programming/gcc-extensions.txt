@@ -8,7 +8,7 @@ gcc -o test test.o -L. -ltest
 gcc -static -o test test.o -L. -ltest
 
 ###compiling an app with a predefined path of shared objects###
-gcc -o app app.o -L. ltest -Wl,-rpath,/usr/local/lib
+gcc -o app app.o -L. -ltest -Wl,-rpath,/usr/local/lib
 ###another way###
 export LD_LIBRARY_PATH=/usr/local/lib:/opt/lib:/usr/lib
 ###yet another way###
@@ -39,7 +39,7 @@ gcc -H source.c -- list of all included headers
 gcc -Q -O3 --help=optimizer -- list of optimization option
 
 __attribute__ - attribute of function, struct or any data
-__attribute__ ((noreturn)) - function cannot return to functiono
+__attribute__ ((noreturn)) - function cannot return to function
 можно задать атрибут, при котором функция будет выполняться до функции
 main или атрибут, после выхода из программы
 

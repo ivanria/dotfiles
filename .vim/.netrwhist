@@ -1,10 +1,12 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =8
+let g:netrw_dirhistcnt =4
+let g:netrw_dirhist_4='/usr/share/doc/electric-fence'
+let g:netrw_dirhist_3='/home/ivr/.config/stardict'
+let g:netrw_dirhist_2='/home/ivr/programming/c/alya'
+let g:netrw_dirhist_1='/etc/ssh'
+let g:netrw_dirhist_0='/etc/ssh/ssh_config.d'
+let g:netrw_dirhist_9='/home/ivr/work/yocto/sources/meta-phytec/recipes-kernel/linux/linux-common'
 let g:netrw_dirhist_8='/home/ivr/work/yocto/sources/meta-phytec/recipes-files/files'
 let g:netrw_dirhist_7='/home/ivr/work/yocto/sources/meta-phytec/recipes-files/files/files'
 let g:netrw_dirhist_6='/home/ivr/.config/pulse'
 let g:netrw_dirhist_5='/home/ivr/.config'
-let g:netrw_dirhist_4='/home/ivr/.config/gtk-3.0'
-let g:netrw_dirhist_3='/home/ivr/work/diff'
-let g:netrw_dirhist_2='/home/ivr/work/yocto_orig/sources/poky/meta/recipes-core/glibc'
-let g:netrw_dirhist_1='/home/ivr/work/yocto_orig/sources/poky/meta/recipes-core/glibc/glibc'
