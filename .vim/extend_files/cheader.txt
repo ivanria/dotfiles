@@ -6,7 +6,7 @@
 int EF_ALIGNMENT = 0;
 int EF_PROTECT_FREE = 1;
 
-int main(void)
+int main(int argc, char **argv)
 {
 	return 0;
 }

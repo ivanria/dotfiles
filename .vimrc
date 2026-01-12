@@ -121,7 +121,7 @@ let g:gutentags_generate_on_empty_buffer = "1"
 let g:gutentags_cscope_build_inverted_index = "1"
 "let g:gutentags_exclude_filetypes = ['out']
 let g:gutentags_file_list_command = 'find . -type f -a \( -name "*.c" -o -name "*.h" -o -name "*.y" -o -name "*.l" -o -name Makefile \) -a -not -name "cscope.*" -a -not \( -path "*/.git/*" -prune \)'
-let g:gutentags_trace = "1"
+let g:gutentags_trace = "0"
 
 nnoremap tk :tabnext<CR> 
 nnoremap tj :tabprev<CR> 
