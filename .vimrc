@@ -51,8 +51,8 @@
 " zM --- close all folds in file
 """"""""""""""""""""""""""""""""""""""""""
 " vimdiff
-" diff obtain
-" diff put
+" diff obtain do
+" diff put dp
 """"""""""""""""""""""""""""""""""""""""""
 " undo redo
 " :earlier 4m

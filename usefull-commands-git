@@ -151,3 +151,21 @@ git branch -d localBranchName
 git push origin --delete remoteBranchName
 #delete local branch
 #delete remote branch
+
+
+#5
+#############################################
+# merging                                   #
+# ###########################################
+
+git config --global merge.tool vimdiff
+#1
+git checkout main
+git merge experimental-branch
+git mergetool
+#2
+git checkout main
+vimdiff test.c <(git show experimental-branch:test.c)
+#3
+git checkout main
+git checkout experimental-branch --patch test.c
