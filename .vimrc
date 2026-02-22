@@ -90,8 +90,11 @@
 "cscope: 
 "cd / && find "$project_dir" -name \*.c -o -name \*.h -o -name \*.y -o -name \*.l > "${project_dir}/cscope.files"
 "cd "$project_dir" && cscope -b && vim (within vim run ":cs add cscope.out"
-"in project dir run vim -t main
-"or in source code press ctrl+spacebar and press s
+" in project dir run vim -t main
+" or in source code press ctrl+spacebar and press s
+" :ho scs find g main 	--- definition of function main --- split window horiz
+" :ho scs find t main	--- all places where main found --- split, new below
+" :cs show main		--- dependency graph
 """""""""""""""""""""""""""""""""""""""""
 
 
