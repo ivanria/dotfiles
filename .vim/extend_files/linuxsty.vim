@@ -13,10 +13,11 @@ set cindent
 :set foldmethod=syntax
 
 if exists("g:loaded_linuxsty")
-    "echo "bad!!!!!!"
     finish
 endif
 let g:loaded_linuxsty = 1
+
+echo "linuxsty is loaded"
 
 set wildignore+=*.ko,*.mod.c,*.order,modules.builtin
 

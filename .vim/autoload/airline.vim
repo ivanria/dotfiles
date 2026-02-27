@@ -1,35 +1,25 @@
-" MIT License. Copyright (c) 2013-2021 Bailey Ling et al.
+" MIT License. Copyright (c) 2013-2019 Bailey Ling et al.
 " vim: et ts=2 sts=2 sw=2
 
 scriptencoding utf-8
 
 let g:airline_statusline_funcrefs = get(g:, 'airline_statusline_funcrefs', [])
-let g:airline_inactive_funcrefs = get(g:, 'airline_inactive_statusline_funcrefs', [])
 
 let s:sections = ['a','b','c','gutter','x','y','z', 'error', 'warning']
+let s:inactive_funcrefs = []
 let s:contexts = {}
 let s:core_funcrefs = [
       \ function('airline#extensions#apply'),
       \ function('airline#extensions#default#apply') ]
 
 
-function! airline#add_statusline_func(name, ...)
-  let warn = get(a:, 1, 1)
-  call airline#add_statusline_funcref(function(a:name), warn)
+function! airline#add_statusline_func(name)
+  call airline#add_statusline_funcref(function(a:name))
 endfunction
 
-function! airline#add_inactive_statusline_func(name, ...)
-  let warn = get(a:, 1, 1)
-  call airline#add_inactive_statusline_funcref(function(a:name), warn)
-endfunction
-
-
-function! airline#add_statusline_funcref(function, ...)
+function! airline#add_statusline_funcref(function)
   if index(g:airline_statusline_funcrefs, a:function) >= 0
-    let warn = get(a:, 1, 1)
-    if warn > 0
-      call airline#util#warning(printf('The airline statusline funcref "%s" has already been added.', string(a:function)))
-    endif
+    call airline#util#warning(printf('The airline statusline funcref "%s" has already been added.', string(a:function)))
     return
   endif
   call add(g:airline_statusline_funcrefs, a:function)
@@ -42,15 +32,8 @@ function! airline#remove_statusline_func(name)
   endif
 endfunction
 
-function! airline#add_inactive_statusline_funcref(function, ...)
-  if index(g:airline_inactive_funcrefs, a:function) >= 0
-    let warn = get(a:, 1, 1)
-    if warn > 0
-      call airline#util#warning(printf('The airline inactive statusline funcref "%s" has already been added.', string(a:function)))
-    endif
-    return
-  endif
-  call add(g:airline_inactive_funcrefs, a:function)
+function! airline#add_inactive_statusline_func(name)
+  call add(s:inactive_funcrefs, function(a:name))
 endfunction
 
 function! airline#load_theme()
@@ -70,8 +53,6 @@ function! airline#load_theme()
   call airline#highlighter#load_theme()
   call airline#extensions#load_theme()
   call airline#update_statusline()
-
-  call airline#util#doautocmd('AirlineAfterTheme')
 endfunction
 
 " Load an airline theme
@@ -112,6 +93,8 @@ function! airline#switch_theme(name, ...)
   unlet! w:airline_lastmode
   call airline#load_theme()
 
+  call airline#util#doautocmd('AirlineAfterTheme')
+
   " this is required to prevent clobbering the startup info message, i don't know why...
   call airline#check_mode(winnr())
 endfunction
@@ -142,10 +125,9 @@ endfunction
 
 " Update the statusline
 function! airline#update_statusline()
-  if airline#util#stl_disabled(winnr()) || airline#util#is_popup_window(winnr())
+  if airline#util#getwinvar(winnr(), 'airline_disabled', 0)
     return
   endif
-  " TODO: need to ignore popup windows here as well?
   let range = filter(range(1, winnr('$')), 'v:val != winnr()')
   " create inactive statusline
   call airline#update_statusline_inactive(range)
@@ -172,11 +154,11 @@ endfunction
 
 " Function to draw inactive statuslines for inactive windows
 function! airline#update_statusline_inactive(range)
-  if airline#util#stl_disabled(winnr())
+  if airline#util#getwinvar(winnr(), 'airline_disabled', 0)
     return
   endif
   for nr in a:range
-    if airline#util#stl_disabled(nr)
+    if airline#util#getwinvar(nr, 'airline_disabled', 0)
       continue
     endif
     call setwinvar(nr, 'airline_active', 0)
@@ -186,7 +168,7 @@ function! airline#update_statusline_inactive(range)
             \ 'left_sep': g:airline_left_alt_sep,
             \ 'right_sep': g:airline_right_alt_sep }, 'keep')
     endif
-    call s:invoke_funcrefs(context, g:airline_inactive_funcrefs)
+    call s:invoke_funcrefs(context, s:inactive_funcrefs)
   endfor
 endfunction
 
@@ -221,66 +203,66 @@ function! airline#check_mode(winnr)
   let context = s:contexts[a:winnr]
 
   if get(w:, 'airline_active', 1)
-    let m = mode(1)
-    if m ==# "i"
-      let mode = ['insert']
-    elseif m[0] ==# "i"
-      let mode = ['insert']
-    elseif m ==# "Rv"
-      let mode =['replace']
-    elseif m[0] ==# "R"
-      let mode = ['replace']
-    elseif m[0] =~# '\v(v|V||s|S|)'
-      let mode = ['visual']
-    elseif m ==# "t"
-      let mode = ['terminal']
-    elseif m[0] ==# "c"
-      let mode = ['commandline']
-    elseif m ==# "no"   " does not work, most likely, Vim does not refresh the statusline in OP mode
-      let mode = ['normal']
-    elseif m[0:1] ==# 'ni'
-      let mode = ['insert']
-      let m = 'ni'
+    let l:m = mode(1)
+    if l:m ==# "i"
+      let l:mode = ['insert']
+    elseif l:m[0] ==# "i"
+      let l:mode = ['insert']
+    elseif l:m ==# "Rv"
+      let l:mode =['replace']
+    elseif l:m[0] ==# "R"
+      let l:mode = ['replace']
+    elseif l:m[0] =~# '\v(v|V||s|S|)'
+      let l:mode = ['visual']
+    elseif l:m ==# "t"
+      let l:mode = ['terminal']
+    elseif l:m[0] ==# "c"
+      let l:mode = ['commandline']
+    elseif l:m ==# "no"   " does not work, most likely, Vim does not refresh the statusline in OP mode
+      let l:mode = ['normal']
+    elseif l:m[0:1] ==# 'ni'
+      let l:mode = ['normal']
+      let l:m = 'ni'
     else
-      let mode = ['normal']
+      let l:mode = ['normal']
     endif
     if exists("*VMInfos") && !empty(VMInfos())
       " Vim plugin Multiple Cursors https://github.com/mg979/vim-visual-multi
-      let m = 'multi'
+      let l:m = 'multi'
     endif
-    if index(['Rv', 'no', 'ni', 'ix', 'ic', 'multi'], m) == -1
-      let m = m[0]
+    if index(['Rv', 'no', 'ni', 'ix', 'ic', 'multi'], l:m) == -1
+      let l:m = l:m[0]
     endif
-    let w:airline_current_mode = get(g:airline_mode_map, m, m)
+    let w:airline_current_mode = get(g:airline_mode_map, l:m, l:m)
   else
-    let mode = ['inactive']
+    let l:mode = ['inactive']
     let w:airline_current_mode = get(g:airline_mode_map, '__')
   endif
 
   if g:airline_detect_modified && &modified
-    call add(mode, 'modified')
+    call add(l:mode, 'modified')
   endif
 
   if g:airline_detect_paste && &paste
-    call add(mode, 'paste')
+    call add(l:mode, 'paste')
   endif
 
   if g:airline_detect_crypt && exists("+key") && !empty(&key)
-    call add(mode, 'crypt')
+    call add(l:mode, 'crypt')
   endif
 
   if g:airline_detect_spell && &spell
-    call add(mode, 'spell')
+    call add(l:mode, 'spell')
   endif
 
   if &readonly || ! &modifiable
-    call add(mode, 'readonly')
+    call add(l:mode, 'readonly')
   endif
 
-  let mode_string = join(mode)
+  let mode_string = join(l:mode)
   if get(w:, 'airline_lastmode', '') != mode_string
     call airline#highlighter#highlight_modified_inactive(context.bufnr)
-    call airline#highlighter#highlight(mode, string(context.bufnr))
+    call airline#highlighter#highlight(l:mode, context.bufnr)
     call airline#util#doautocmd('AirlineModeChanged')
     let w:airline_lastmode = mode_string
   endif

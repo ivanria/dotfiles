@@ -1,4 +1,4 @@
-" MIT License. Copyright (c) 2013-2021 Bailey Ling et al.
+" MIT License. Copyright (c) 2013-2019 Bailey Ling et al.
 " Plugin: http://www.drchip.org/astronaut/vim/#NETRW
 " vim: et ts=2 sts=2 sw=2
 
@@ -31,5 +31,5 @@ endfunction
 
 function! airline#extensions#netrw#sortstring()
   let order = (get(g:, 'netrw_sort_direction', 'n') =~ 'n') ? '+' : '-'
-  return get(g:, 'netrw_sort_by', '') . (g:airline_symbols.space) . '[' . order . ']'
+  return g:netrw_sort_by . (g:airline_symbols.space) . '[' . order . ']'
 endfunction

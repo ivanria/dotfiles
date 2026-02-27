@@ -2,3 +2,5 @@
 .vim/undodir/*
 cscope.out*
 .notags
+.netrwhist
+.VimballRecord

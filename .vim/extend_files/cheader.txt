@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int EF_ALIGNMENT = 0;
-int EF_PROTECT_FREE = 1;
+extern int EF_ALIGNMENT;
+extern int EF_PROTECT_FREE;
 
 int main(int argc, char **argv)
 {
