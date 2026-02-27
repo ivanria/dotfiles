@@ -1,4 +1,4 @@
-" MIT License. Copyright (c) 2013-2021 Christian Brabandt et al.
+" MIT License. Copyright (c) 2013-2019 Christian Brabandt et al.
 " vim: et ts=2 sts=2 sw=2
 
 scriptencoding utf-8
@@ -131,10 +131,10 @@ if v:version >= 800 && has("job")
   endfunction
 
   function! airline#async#get_mq_async(cmd, file)
-    if g:airline#init#is_windows && &shell =~ 'cmd\|powershell'
+    if g:airline#init#is_windows && &shell =~ 'cmd'
       let cmd = a:cmd
     else
-      let cmd = [&shell, &shellcmdflag, a:cmd]
+      let cmd = ['sh', '-c', a:cmd]
     endif
 
     let options = {'cmd': a:cmd, 'buf': '', 'file': a:file}
@@ -153,12 +153,9 @@ if v:version >= 800 && has("job")
   endfunction
 
   function! airline#async#get_msgfmt_stat(cmd, file)
-    if !executable('msgfmt')
-      " no msgfmt
+    if g:airline#init#is_windows || !executable('msgfmt')
+      " no msgfmt on windows?
       return
-    endif
-    if g:airline#init#is_windows
-      let cmd = 'cmd /C ' . a:cmd. shellescape(a:file)
     else
       let cmd = ['sh', '-c', a:cmd. shellescape(a:file)]
     endif
@@ -179,10 +176,10 @@ if v:version >= 800 && has("job")
   endfunction
 
   function! airline#async#vim_vcs_clean(cmd, file, vcs)
-    if g:airline#init#is_windows && &shell =~ 'cmd\|powershell'
+    if g:airline#init#is_windows && &shell =~ 'cmd'
       let cmd = a:cmd
     else
-      let cmd = [&shell, &shellcmdflag, a:cmd]
+      let cmd = ['sh', '-c', a:cmd]
     endif
 
     let options = {'buf': '', 'vcs': a:vcs, 'file': a:file}
@@ -205,10 +202,10 @@ if v:version >= 800 && has("job")
   endfunction
 
   function! airline#async#vim_vcs_untracked(config, file)
-    if g:airline#init#is_windows && &shell =~ 'cmd\|powershell'
+    if g:airline#init#is_windows && &shell =~ 'cmd'
       let cmd = a:config['cmd'] . shellescape(a:file)
     else
-      let cmd = [&shell, &shellcmdflag, a:config['cmd'] . shellescape(a:file)]
+      let cmd = ['sh', '-c', a:config['cmd'] . shellescape(a:file)]
     endif
 
     let options = {'cfg': a:config, 'buf': '', 'file': a:file}
@@ -266,10 +263,10 @@ elseif has("nvim")
     \ 'on_stderr': function('s:nvim_output_handler'),
     \ 'on_exit': function('s:nvim_mq_job_handler')
     \ }
-    if g:airline#init#is_windows && &shell =~ 'cmd\|powershell'
+    if g:airline#init#is_windows && &shell =~ 'cmd'
       let cmd = a:cmd
     else
-      let cmd = [&shell, &shellcmdflag, a:cmd]
+      let cmd = ['sh', '-c', a:cmd]
     endif
 
     if has_key(s:mq_jobs, a:file)
@@ -288,11 +285,11 @@ elseif has("nvim")
     \ 'on_stderr': function('s:nvim_output_handler'),
     \ 'on_exit': function('s:nvim_po_job_handler')
     \ }
-    if g:airline#init#is_windows && &shell =~ 'cmd\|powershell'
+    if g:airline#init#is_windows && &shell =~ 'cmd'
       " no msgfmt on windows?
       return
     else
-      let cmd = [&shell, &shellcmdflag, a:cmd. shellescape(a:file)]
+      let cmd = ['sh', '-c', a:cmd. shellescape(a:file)]
     endif
 
     if has_key(s:po_jobs, a:file)
@@ -311,10 +308,10 @@ elseif has("nvim")
     \ 'on_stdout': function('s:nvim_output_handler'),
     \ 'on_stderr': function('s:nvim_output_handler'),
     \ 'on_exit': function('s:on_exit_clean')}
-    if g:airline#init#is_windows && &shell =~ 'cmd\|powershell'
+    if g:airline#init#is_windows && &shell =~ 'cmd'
       let cmd = a:cmd
     else
-      let cmd = [&shell, &shellcmdflag, a:cmd]
+      let cmd = ['sh', '-c', a:cmd]
     endif
 
     if !has_key(s:clean_jobs, a:vcs)
@@ -372,8 +369,6 @@ function! airline#async#vim7_vcs_clean(cmd, file, vcs)
   " don't want to to see error messages
   if g:airline#init#is_windows && &shell =~ 'cmd'
     let cmd = a:cmd .' 2>nul'
-  elseif g:airline#init#is_windows && &shell =~ 'powerline'
-    let cmd = a:cmd .' 2> $null'
   else
     let cmd = a:cmd .' 2>/dev/null'
   endif

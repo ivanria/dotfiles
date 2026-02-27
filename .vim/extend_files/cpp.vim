@@ -31,7 +31,6 @@ augroup linuxsty
 
     autocmd FileType c,cpp call s:LinuxFormatting()
     autocmd FileType c,cpp call s:LinuxKeywords()
-    autocmd FileType c,cpp call s:LinuxHighlighting()
     autocmd FileType diff,kconfig setlocal tabstop=4
 augroup END
 
@@ -51,12 +50,5 @@ function s:LinuxKeywords()
     syn keyword cType u8 u16 u32 u64 s8 s16 s32 s64
 endfunction
 
-function s:LinuxHighlighting()
-    highlight default link LinuxError ErrorMsg
-
-    syn match LinuxError / \+\ze\t/     " spaces before tab
-    "syn match LinuxError /[^\s.+]\s\+$/        " trailing whitespaces
-    "syn match LinuxError /\%81v.\+/     " virtual column 81 and more
-endfunction
 
 " vim: ts=4 et sw=4

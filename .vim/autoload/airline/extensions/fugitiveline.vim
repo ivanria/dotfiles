@@ -1,4 +1,4 @@
-" MIT License. Copyright (c) 2017-2021 Cimbali et al
+" MIT License. Copyright (c) 2017-2019 Cimbali et al
 " Plugin: https://github.com/tpope/vim-fugitive
 " vim: et ts=2 sts=2 sw=2
 
@@ -12,7 +12,7 @@ function! s:ModifierFlags()
   return (exists("+autochdir") && &autochdir) ? ':p' : ':.'
 endfunction
 
-function! airline#extensions#fugitiveline#bufname() abort
+function! airline#extensions#fugitiveline#bufname()
   if !exists('b:fugitive_name')
     let b:fugitive_name = ''
     try
@@ -34,36 +34,19 @@ function! airline#extensions#fugitiveline#bufname() abort
 
   let fmod = s:ModifierFlags()
   if empty(b:fugitive_name)
-    if empty(bufname('%'))
-      return &buftype ==# 'nofile' ? '[Scratch]' : '[No Name]'
-    endif
     return fnamemodify(bufname('%'), fmod)
   else
     return fnamemodify(b:fugitive_name, fmod). " [git]"
   endif
 endfunction
 
-function! s:sh_autocmd_handler()
-  if exists('#airline')
-    unlet! b:fugitive_name
-  endif
-endfunction
-
-function! airline#extensions#fugitiveline#init(ext) abort
+function! airline#extensions#fugitiveline#init(ext)
   if exists("+autochdir") && &autochdir
     " if 'acd' is set, vim-airline uses the path section, so we need to redefine this here as well
-    if get(g:, 'airline_stl_path_style', 'default') ==# 'short'
-      call airline#parts#define_raw('path', '%<%{pathshorten(airline#extensions#fugitiveline#bufname())}%m')
-    else
-      call airline#parts#define_raw('path', '%<%{airline#extensions#fugitiveline#bufname()}%m')
-    endif
+    call airline#parts#define_raw('path', '%<%{airline#extensions#fugitiveline#bufname()}%m')
   else
-    if get(g:, 'airline_stl_path_style', 'default') ==# 'short'
-      call airline#parts#define_raw('file', '%<%{pathshorten(airline#extensions#fugitiveline#bufname())}%m')
-    else
-      call airline#parts#define_raw('file', '%<%{airline#extensions#fugitiveline#bufname()}%m')
-    endif
+    call airline#parts#define_raw('file', '%<%{airline#extensions#fugitiveline#bufname()}%m')
   endif
-  autocmd ShellCmdPost,CmdwinLeave * call s:sh_autocmd_handler()
-  autocmd User AirlineBeforeRefresh call s:sh_autocmd_handler()
+  autocmd ShellCmdPost,CmdwinLeave * unlet! b:fugitive_name
+  autocmd User AirlineBeforeRefresh unlet! b:fugitive_name
 endfunction

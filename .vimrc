@@ -97,7 +97,6 @@
 " :cs show main		--- dependency graph
 """""""""""""""""""""""""""""""""""""""""
 
-
 set nocompatible
 syntax on
 
@@ -109,14 +108,54 @@ if $TERM == "xterm-256color"
 	set t_Co=256
 endif
 
+"if has("termguicolors")
+    "set termguicolors
+"endif
+
 set clipboard=unnamedplus
 
 "set virtualedit=all
 
+"let g:airline#extensions#xkblayout#enabled = "1"
+"let g:XkbSwitchLib = '/opt/lib/libxkbswitch.so'
+"autocmd InsertEnter,InsertLeave * airline#update()
+"autocmd CursorHold,CursorHoldI * airline#update()
+"echo libcall(g:XkbSwitchLib, 'Xkb_Switch_getXkbLayout', '')
+"call libcall(g:XkbSwitchLib, 'Xkb_Switch_setXkbLayout', 'ru')
+"let g:airline_statusline_ontop= "1"
+"set stl=%!airline#check_mode(winnr())
+
+let g:netrw_dirhistmax=0
+
+"======== generate syntax file ========
+function! UpdateSyntaxFromTags(root_dir) abort
+    let l:syntax_file = '__local_syntax.vim'
+    let l:tags_file = '__ctags_syntax_src'
+    let l:full_path_tags_file = a:root_dir . '/' . l:tags_file
+    if filereadable(l:full_path_tags_file)
+
+        let l:full_path_syntax_file = a:root_dir . '/' . l:syntax_file
+        
+        let l:cmd = 'sed -En "s/^([^\t]+)[[:space:]].*[[:space:]][tsgu]([[:space:]]|$).*$/syntax keyword MyCustomType \1/p ; s/^([^\t]+)[[:space:]].*[[:space:]][de]([[:space:]]|$).*$/syntax keyword MyCustomMacro \1/p" ' . l:full_path_tags_file . ' | sort -u > ' . l:full_path_syntax_file
+        
+	call job_start(['/bin/sh', '-c', l:cmd], { 'exit_cb': {j, c -> execute('if !empty(expand("%")) | ' . 'silent! source ' . l:full_path_syntax_file . ' | highlight link MyCustomType Type | highlight link MyCustomMacro PreProc | endif')} } )
+
+    else
+        echomsg "[SyntaxUpdate]: " . l:full_path_ctags_file . " ctags file is not readeable"
+    endif
+endfunction
+"======== generate syntax file ========
+
 let g:gutentags_enabled = "1"
+"check in the future is .git gutentags_project_root
+let g:gutentags_exclude_project_root = ['/home/ivr/programming/c']
+let g:gutentags_add_default_project_roots = "0"
 let g:gutentags_project_root = ['__gutentags_enable_file']
 "I'll check in the future whether it works or not "gutentags_root".
-let g:gutentags_modules = ['cscope']
+let g:gutentags_modules = ['cscope', 'ctags']
+"let g:gutentags_modules = ['cscope']
+let g:gutentags_ctags_auto_set_tags = "0"
+let g:gutentags_ctags_tagfile = "__ctags_syntax_src"
 let g:gutentags_generate_on_new = "1"
 let g:gutentags_generate_on_missing = "1"
 let g:gutentags_generate_on_write = "1"
@@ -124,7 +163,8 @@ let g:gutentags_generate_on_empty_buffer = "1"
 let g:gutentags_cscope_build_inverted_index = "1"
 "let g:gutentags_exclude_filetypes = ['out']
 let g:gutentags_file_list_command = 'find . -type f -a \( -name "*.c" -o -name "*.h" -o -name "*.y" -o -name "*.l" -o -name Makefile \) -a -not -name "cscope.*" -a -not \( -path "*/.git/*" -prune \)'
-let g:gutentags_trace = "0"
+let g:gutentags_trace = "1"
+
 
 nnoremap tk :tabnext<CR> 
 nnoremap tj :tabprev<CR> 
@@ -137,8 +177,8 @@ filetype plugin on
 filetype on
 filetype indent on
 """"""""""file extensions""""""""""
-autocmd BufNewFile,BufRead *.hpp source $VIMHOME/extend_files/cpp.vim 
-autocmd BufNewFile,BufRead *.cpp source $VIMHOME/extend_files/cpp.vim 
+"autocmd BufNewFile,BufRead *.hpp source $VIMHOME/extend_files/cpp.vim 
+"autocmd BufNewFile,BufRead *.cpp source $VIMHOME/extend_files/cpp.vim 
 autocmd BufNewFile,BufRead *.h source $VIMHOME/extend_files/linuxsty.vim 
 autocmd BufNewFile,BufRead *.c source $VIMHOME/extend_files/linuxsty.vim 
 autocmd BufNewFile,BufRead *.bb set syntax=bitbake
@@ -146,13 +186,16 @@ autocmd BufNewFile,BufRead *.bb set syntax=bitbake
 "autocmd BufNewFile,BufRead *.c source $VIMHOME/tags_gen.vim 
 autocmd BufNewFile *.c so $VIMHOME/extend_files/cheader.txt
 autocmd BufNewFile *.cpp so $VIMHOME/extend_files/cppheader.txt
-autocmd BufNewFile,BufRead *.htm  set cindent shiftwidth=2 tabstop=2 
-autocmd BufNewFile,BufRead *.html set cindent shiftwidth=2 tabstop=2
-autocmd BufNewFile,BufRead *.py source $VIMHOME/indent/python.vim
+"autocmd BufNewFile,BufRead *.htm  set cindent shiftwidth=2 tabstop=2 
+"autocmd BufNewFile,BufRead *.html set cindent shiftwidth=2 tabstop=2
+"autocmd BufNewFile,BufRead *.py source $VIMHOME/indent/python.vim
 "autocmd BufNewFile,BufRead 
 """""""""""end of file extensions section""""""""""
 
-command Thtml :%!tidy -utf8 -q -i --show-errors 0
+
+
+"command Thtml :%!tidy -utf8 -q -i --show-errors 0
+
 
 """"""""""statusline""""""""""
 "set laststatus=2
@@ -172,7 +215,7 @@ command Thtml :%!tidy -utf8 -q -i --show-errors 0
 
 set smartcase
 
-set fileencodings=utf-8,cp1251,cp866,koi8-r
+"set fileencodings=utf-8,cp1251,cp866,koi8-r
 
 set hlsearch
 
@@ -182,104 +225,10 @@ set undodir=$VIMHOME/undodir
 set undolevels=1000
 set undoreload=10000
 
-":map <F11>  :sp tags<CR>:%s/^\([^	:]*:\)\=\([^	]*\).*/syntax keyword Tag \2/<CR>:wq! tags.vim<CR>/^<CR><F12>
-":map <F12>  :so tags.vim<CR>
 
-" load the types.vim highlighting file, if it exists
-autocmd BufRead,BufNewFile *.[ch] let fname = expand('<afile>:p:h') . '/types.vim'
-autocmd BufRead,BufNewFile *.[ch] if filereadable(fname)
-autocmd BufRead,BufNewFile *.[ch]   exe 'so ' . fname
-autocmd BufRead,BufNewFile *.[ch] endif
-
-" <F7> File fileformat (dos - <CR> <NL>, unix - <NL>, mac - <CR>)
-map <F7>  :execute RotateFileFormat()<CR>
-vmap <F7>	<C-C><F7>
-imap <F7>	<C-O><F7>
-let b:fformatindex=0
-function! RotateFileFormat()
-  let y = -1
-  while y == -1
-    let encstring = "#unix#dos#mac#"
-    let x = match(encstring,"#",b:fformatindex)
-    let y = match(encstring,"#",x+1)
-    let b:fformatindex = x+1
-    if y == -1
-      let b:fformatindex = 0
-    else
-      let str = strpart(encstring,x+1,y-x-1)
-      return ":set fileformat=".str
-    endif
-  endwhile
-endfunction
-
-" <F8> File encoding for open
-" ucs-2le - MS Windows unicode encoding
-map <F8>	:execute RotateEnc()<CR>
-vmap <F8>	<C-C><F8>
-imap <F8>	<C-O><F8>
-let b:encindex=0
-function! RotateEnc()
-  let y = -1
-  while y == -1
-    let encstring = "#koi8-r#cp1251#8bit-cp866#utf-8#ucs-2le#"
-    let x = match(encstring,"#",b:encindex)
-    let y = match(encstring,"#",x+1)
-    let b:encindex = x+1
-    if y == -1
-      let b:encindex = 0
-    else
-      let str = strpart(encstring,x+1,y-x-1)
-      return ":e ++enc=".str
-    endif
-  endwhile
-endfunction
-
-" <Shift+F8> Force file encoding for open (encoding = fileencoding)
-map <S-F8>	:execute ForceRotateEnc()<CR>
-vmap <S-F8>	<C-C><S-F8>
-imap <S-F8>	<C-O><S-F8>
-let b:encindex=0
-function! ForceRotateEnc()
-  let y = -1
-  while y == -1
-    let encstring = "#koi8-r#cp1251#8bit-cp866#utf-8#ucs-2le#"
-    let x = match(encstring,"#",b:encindex)
-    let y = match(encstring,"#",x+1)
-    let b:encindex = x+1
-    if y == -1
-      let b:encindex = 0
-    else
-      let str = strpart(encstring,x+1,y-x-1)
-      :execute "set encoding=".str
-      return ":e ++enc=".str
-    endif
-  endwhile
-endfunction
-
-" <Ctrl+F8> File encoding for save (convert)
-map <C-F8>	:execute RotateFEnc()<CR>
-vmap <C-F8>	<C-C><C-F8>
-imap <C-F8>	<C-O><C-F8>
-let b:fencindex=0
-function! RotateFEnc()
-  let y = -1
-  while y == -1
-    let encstring = "#koi8-r#cp1251#8bit-cp866#utf-8#ucs-2le#"
-    let x = match(encstring,"#",b:fencindex)
-    let y = match(encstring,"#",x+1)
-    let b:fencindex = x+1
-    if y == -1
-      let b:fencindex = 0
-    else
-      let str = strpart(encstring,x+1,y-x-1)
-      return ":set fenc=".str
-    endif
-  endwhile
-endfunction
-
-set statusline=%<%f%h%m%r%=format=%{&fileformat}\ file=%{&fileencoding}\ enc=%{&encoding}\ %l,%c%V\ %P
-set statusline+=%{gutentags#statusline()}
-set laststatus=2
+"set statusline=%<%f%h%m%r%=format=%{&fileformat}\ file=%{&fileencoding}\ enc=%{&encoding}\ %l,%c%V\ %P
+"set statusline+=%{gutentags#statusline()}
+"set laststatus=2
 
 """"""""""""""""""""""""""
 "disble arrow keys in vim"

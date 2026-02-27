@@ -1,4 +1,4 @@
-" MIT License. Copyright (c) 2013-2021 Bailey Ling et al.
+" MIT License. Copyright (c) 2013-2019 Bailey Ling et al.
 " vim: et ts=2 sts=2 sw=2
 
 scriptencoding utf-8
@@ -76,14 +76,17 @@ else
   endfunction
 endif
 
-function! airline#extensions#default#apply(builder, context) abort
+function! airline#extensions#default#apply(builder, context)
   let winnr = a:context.winnr
   let active = a:context.active
 
   if airline#util#getwinvar(winnr, 'airline_render_left', active || (!active && !g:airline_inactive_collapse))
     call s:build_sections(a:builder, a:context, s:layout[0])
   else
-    let text = !empty(s:get_section(winnr, 'c')) ? s:get_section(winnr, 'c') : ' %f%m '
+    let text = s:get_section(winnr, 'c')
+    if empty(text)
+      let text = ' %f%m '
+    endif
     call a:builder.add_section('airline_c'.(a:context.bufnr), text)
   endif
 

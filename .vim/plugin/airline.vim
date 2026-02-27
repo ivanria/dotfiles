@@ -1,8 +1,5 @@
-" MIT License. Copyright (c) 2013-2021 Bailey Ling, Christian Brabandt et al.
+" MIT License. Copyright (c) 2013-2019 Bailey Ling, Christian Brabandt et al.
 " vim: et ts=2 sts=2 sw=2
-
-let s:save_cpo = &cpo
-set cpo&vim
 
 scriptencoding utf-8
 
@@ -49,16 +46,16 @@ endfunction
 
 let s:active_winnr = -1
 function! s:on_window_changed(event)
-  " don't trigger for Vim popup windows
-  if &buftype is# 'popup'
-    return
-  endif
+  let s:active_winnr = winnr()
 
   if pumvisible() && (!&previewwindow || g:airline_exclude_preview)
-    " do not trigger for previewwindows
     return
   endif
-  let s:active_winnr = winnr()
+  " work around a neovim bug: do not trigger on floating windows
+  " Disabled, Bug is fixed in Neovim, TODO: should be removed soon
+  " if exists("*nvim_win_get_config") && !empty(nvim_win_get_config(0).relative)
+  "  return
+  " endif
   " Handle each window only once, since we might come here several times for
   " different autocommands.
   let l:key = [bufnr('%'), s:active_winnr, winnr('$'), tabpagenr(), &ft]
@@ -74,12 +71,6 @@ function! s:on_window_changed(event)
   call airline#update_statusline()
 endfunction
 
-function! s:on_focus_gained()
-  if airline#util#try_focusgained()
-    unlet! w:airline_lastmode | :call <sid>airline_refresh(1)
-  endif
-endfunction
-
 function! s:on_cursor_moved()
   if winnr() != s:active_winnr || !exists('w:airline_active')
     call s:on_window_changed('CursorMoved')
@@ -91,6 +82,7 @@ function! s:on_colorscheme_changed()
   call s:init()
   unlet! g:airline#highlighter#normal_fg_hi
   call airline#highlighter#reset_hlcache()
+  let g:airline_gui_mode = airline#init#gui_mode()
   if !s:theme_in_vimrc
     call airline#switch_matching_theme()
   endif
@@ -130,7 +122,11 @@ function! s:airline_toggle()
             \ | call <sid>on_window_changed('CmdwinEnter')
       autocmd CmdwinLeave * call airline#remove_statusline_func('airline#cmdwinenter')
 
-      autocmd ColorScheme * call <sid>on_colorscheme_changed()
+      autocmd GUIEnter,ColorScheme * call <sid>on_colorscheme_changed()
+      if exists("##OptionSet")
+        " Make sure that g_airline_gui_mode is refreshed
+        autocmd OptionSet termguicolors call <sid>on_colorscheme_changed()
+      endif
       " Set all statuslines to inactive
       autocmd FocusLost * call airline#update_statusline_focuslost()
       " Refresh airline for :syntax off
@@ -147,14 +143,14 @@ function! s:airline_toggle()
       " non-trivial number of external plugins use eventignore=all, so we need to account for that
       autocmd CursorMoved * call <sid>on_cursor_moved()
 
-      autocmd VimResized * call <sid>on_focus_gained()
+      autocmd VimResized * unlet! w:airline_lastmode | :call <sid>airline_refresh()
       if exists('*timer_start') && exists('*funcref')
         " do not trigger FocusGained on startup, it might erase the intro screen (see #1817)
         " needs funcref() (needs 7.4.2137) and timers (7.4.1578)
         let Handler=funcref('<sid>FocusGainedHandler')
         let s:timer=timer_start(5000, Handler)
       else
-        autocmd FocusGained * call <sid>on_focus_gained()
+        autocmd FocusGained * unlet! w:airline_lastmode | :call <sid>airline_refresh()
       endif
 
       if exists("##TerminalOpen")
@@ -174,14 +170,8 @@ function! s:airline_toggle()
       endif
     augroup END
 
-    if !airline#util#stl_disabled(winnr())
-      if &laststatus < 2
-        let _scroll=&scroll
-        set laststatus=2
-        if &scroll != _scroll
-          let &scroll = _scroll
-        endif
-      endif
+    if &laststatus < 2
+      set laststatus=2
     endif
     if s:airline_initialized
       call s:on_window_changed('Init')
@@ -230,16 +220,16 @@ function! s:airline_refresh(...)
 endfunction
 
 function! s:FocusGainedHandler(timer)
-  if exists("s:timer") && a:timer == s:timer && exists('#airline')
+  if exists("s:timer") && a:timer == s:timer
     augroup airline
-      au FocusGained * call s:on_focus_gained()
+      au FocusGained * unlet! w:airline_lastmode | :call <sid>airline_refresh()
     augroup END
   endif
 endfu
 
 function! s:airline_extensions()
   let loaded = airline#extensions#get_loaded_extensions()
-  let files = split(globpath(&rtp, 'autoload/airline/extensions/*.vim', 1), "\n")
+  let files = split(globpath(&rtp, "autoload/airline/extensions/*.vim"), "\n")
   call map(files, 'fnamemodify(v:val, ":t:r")')
   if empty(files)
     echo "No extensions loaded"
@@ -261,10 +251,7 @@ function! s:airline_extensions()
 endfunction
 
 function! s:rand(max) abort
-  if exists("*rand")
-    " Needs Vim 8.1.2342
-    let number=rand()
-  elseif has("reltime")
+  if has("reltime")
     let timerstr=reltimestr(reltime())
     let number=split(timerstr, '\.')[1]+0
   elseif has("win32") && &shell =~ 'cmd'
@@ -292,9 +279,3 @@ command! AirlineExtensions   call s:airline_extensions()
 
 call airline#init#bootstrap()
 call s:airline_toggle()
-if exists("v:vim_did_enter") && v:vim_did_enter
-  call <sid>on_window_changed('VimEnter')
-endif
-
-let &cpo = s:save_cpo
-unlet s:save_cpo
