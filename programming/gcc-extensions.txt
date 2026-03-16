@@ -7,6 +7,10 @@ gcc -o test test.o -L. -ltest
 ###static linking###
 gcc -static -o test test.o -L. -ltest
 
+### verbose output ###
+gcc -v
+gcc -Wl.--verbose
+
 ###compiling an app with a predefined path of shared objects###
 gcc -o app app.o -L. -ltest -Wl,-rpath,/usr/local/lib
 ###another way###
@@ -28,6 +32,29 @@ dlclose (handle);
 
 ###macro###
 gcc -E test.c
+gcc -E -dM test.c ---- -dM --- only macros in program test.c and gcc macros
+gcc -dM -E - < /dev/null only default gcc macros
+-dN only names of macros
+-dD all source code after preprocess
+gcc -S -dp test.c assembler code .s with comments
+
+
+
+
+### assembler + c source code ###
+gcc -g -c test.c -Wa,-adhln=test.lst --- -Wa, passes to assembler
+-a Enables the listing.
+-h Includes high-level source code (your C code).
+-l Includes the assembly code.
+-n Omits forms processing (prevents extra page breaks).
+-d Omits debugging directives (makes the file cleaner). do not show debugging simbols
+1. Line number in the listing file.
+2. Memory offset (relative address of the instruction).
+3. Hexadecimal machine code (the actual bytes).
+4. Assembly and C source side-by-side
+
+
+
 
 ###expand macro in a specific file###
 echo '#include <netinet/in.h>' | gcc -E - | less
@@ -58,7 +85,9 @@ args
 
 ###gdb###
 need compile with debug flag
-gcc -g test.c -o test
+gcc -g{level} test.c -o test      ### level may be -g0 not debugging sim.
+######## -g1 minimal stack. -g2 default level -g3 max level include #define
+
 gdb ./a.out core - view crash couse
 gdb --args ./a.out "hello world" -- run progrma with arguments
 
