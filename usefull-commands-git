@@ -15,6 +15,9 @@ touch filename test.c && git add filename *.c
 git clone git://github.com/project.git
 #create project folder and clone into folder
 
+git clone -b some_branch https://github.com/username/repository.git
+#clone specific branch
+
 git status
 # show status of repo
 # indexing files, commits
