@@ -169,3 +169,13 @@ vimdiff test.c <(git show experimental-branch:test.c)
 #3
 git checkout main
 git checkout experimental-branch --patch test.c
+
+
+#############################################
+# private branch                            #
+#############################################
+
+#create empty private rep on github Secret-repo
+git remote set-url Secret-repo git@github.com:username/Secret-repo.git
+git checkout -b secret_branch
+git push Secret-repo secret_branch
