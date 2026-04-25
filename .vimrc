@@ -88,13 +88,24 @@
 " :tags       --- list previously finded tags
 """""""""""""""""""""""""""""""""""""""""
 "cscope: 
-"cd / && find "$project_dir" -name \*.c -o -name \*.h -o -name \*.y -o -name \*.l > "${project_dir}/cscope.files"
-"cd "$project_dir" && cscope -b && vim (within vim run ":cs add cscope.out"
 " in project dir run vim -t main
 " or in source code press ctrl+spacebar and press s
 " :ho scs find g main 	--- definition of function main --- split window horiz
 " :ho scs find t main	--- all places where main found --- split, new below
 " :cs show main		--- dependency graph
+"
+"   's'   symbol: find all references to the token under cursor
+"   'g'   global: find global definition(s) of the token under cursor
+"   'c'   calls:  find all calls to the function name under cursor
+"   't'   text:   find all instances of the text under cursor
+"   'e'   egrep:  egrep search for the word under cursor
+"   'f'   file:   open the filename under cursor
+"   'i'   includes: find files that include the filename under cursor
+"   'd'   called: find functions that function under cursor calls
+"""""""""""""""""""""""""""""""""""""""""
+"Yanc Paste. Delete Paste
+" "1-9p or 1-9P it is delete from 1 to 9. 0p or 0P it is last yanc
+" :reg show all register yanc and delete
 """""""""""""""""""""""""""""""""""""""""
 
 set nocompatible
@@ -116,54 +127,35 @@ set clipboard=unnamedplus
 
 "set virtualedit=all
 
-"let g:airline#extensions#xkblayout#enabled = "1"
-"let g:XkbSwitchLib = '/opt/lib/libxkbswitch.so'
-"autocmd InsertEnter,InsertLeave * airline#update()
-"autocmd CursorHold,CursorHoldI * airline#update()
-"echo libcall(g:XkbSwitchLib, 'Xkb_Switch_getXkbLayout', '')
-"call libcall(g:XkbSwitchLib, 'Xkb_Switch_setXkbLayout', 'ru')
-"let g:airline_statusline_ontop= "1"
-"set stl=%!airline#check_mode(winnr())
+let g:gutensyntax_enable = 1
+let g:gutensyntax_syntax_defs = [
+\ ['MyCustomCType',  'sgut', 'Type'],
+\ ['MyCustomCMacro', 'de',   'PreProc'],
+\ ['MyCustomCFunc',  'f',    'Function']
+\ ]
 
 let g:netrw_dirhistmax=0
 
-"======== generate syntax file ========
-function! UpdateSyntaxFromTags(root_dir) abort
-    let l:syntax_file = '__local_syntax.vim'
-    let l:tags_file = '__ctags_syntax_src'
-    let l:full_path_tags_file = a:root_dir . '/' . l:tags_file
-    if filereadable(l:full_path_tags_file)
-
-        let l:full_path_syntax_file = a:root_dir . '/' . l:syntax_file
-        
-        let l:cmd = 'sed -En "s/^([^\t]+)[[:space:]].*[[:space:]][tsgu]([[:space:]]|$).*$/syntax keyword MyCustomType \1/p ; s/^([^\t]+)[[:space:]].*[[:space:]][de]([[:space:]]|$).*$/syntax keyword MyCustomMacro \1/p" ' . l:full_path_tags_file . ' | sort -u > ' . l:full_path_syntax_file
-        
-	call job_start(['/bin/sh', '-c', l:cmd], { 'exit_cb': {j, c -> execute('if !empty(expand("%")) | ' . 'silent! source ' . l:full_path_syntax_file . ' | highlight link MyCustomType Type | highlight link MyCustomMacro PreProc | endif')} } )
-
-    else
-        echomsg "[SyntaxUpdate]: " . l:full_path_ctags_file . " ctags file is not readeable"
-    endif
-endfunction
-"======== generate syntax file ========
-
-let g:gutentags_enabled = "1"
+let g:gutentags_enabled = 1
 "check in the future is .git gutentags_project_root
 let g:gutentags_exclude_project_root = ['/home/ivr/programming/c']
-let g:gutentags_add_default_project_roots = "0"
-let g:gutentags_project_root = ['__gutentags_enable_file']
+let g:gutentags_add_default_project_roots = 1
+"let g:gutentags_project_root = ['__gutentags_enable_file']
 "I'll check in the future whether it works or not "gutentags_root".
 let g:gutentags_modules = ['cscope', 'ctags']
-"let g:gutentags_modules = ['cscope']
-let g:gutentags_ctags_auto_set_tags = "0"
+"let g:gutentags_modules = ['ctags']
+"let g:gutentags_ctags_extra_args = ['--links=no', '--languages=c']
+"let g:gutentags_ctags_auto_set_tags = "1"
 let g:gutentags_ctags_tagfile = "__ctags_syntax_src"
-let g:gutentags_generate_on_new = "1"
-let g:gutentags_generate_on_missing = "1"
-let g:gutentags_generate_on_write = "1"
-let g:gutentags_generate_on_empty_buffer = "1"
-let g:gutentags_cscope_build_inverted_index = "1"
+"let g:gutentags_ctags_extra_args = ['--recurse', '--tag-relative=no', '--fields=+a', '--languages=C,C++,Make,Yacc,Flex']
+let g:gutentags_generate_on_new = 1
+let g:gutentags_generate_on_missing = 1
+let g:gutentags_generate_on_write = 1
+let g:gutentags_generate_on_empty_buffer = 1
+let g:gutentags_cscope_build_inverted_index = 1
 "let g:gutentags_exclude_filetypes = ['out']
-let g:gutentags_file_list_command = 'find . -type f -a \( -name "*.c" -o -name "*.h" -o -name "*.y" -o -name "*.l" -o -name Makefile \) -a -not -name "cscope.*" -a -not \( -path "*/.git/*" -prune \)'
-let g:gutentags_trace = "1"
+"let g:gutentags_file_list_command = 'find . -type f -a \( -name "*.c" -o -name "*.h" -o -name "*.y" -o -name "*.l" -o -name Makefile \) -a -not -name "cscope.*" -a -not \( -path "*/.git/*" -prune \)'
+let g:gutentags_trace = 1
 
 
 nnoremap tk :tabnext<CR> 
@@ -185,37 +177,14 @@ autocmd BufNewFile,BufRead *.bb set syntax=bitbake
 "autocmd BufNewFile,BufRead *.h source $VIMHOME/tags_gen.vim 
 "autocmd BufNewFile,BufRead *.c source $VIMHOME/tags_gen.vim 
 autocmd BufNewFile *.c so $VIMHOME/extend_files/cheader.txt
-autocmd BufNewFile *.cpp so $VIMHOME/extend_files/cppheader.txt
+"autocmd BufNewFile *.cpp so $VIMHOME/extend_files/cppheader.txt
 "autocmd BufNewFile,BufRead *.htm  set cindent shiftwidth=2 tabstop=2 
 "autocmd BufNewFile,BufRead *.html set cindent shiftwidth=2 tabstop=2
 "autocmd BufNewFile,BufRead *.py source $VIMHOME/indent/python.vim
 "autocmd BufNewFile,BufRead 
 """""""""""end of file extensions section""""""""""
 
-
-
-"command Thtml :%!tidy -utf8 -q -i --show-errors 0
-
-
-""""""""""statusline""""""""""
-"set laststatus=2
-"set statusline=
-"set statusline+=%-3.3n\
-"set statusline+=%f\
-"set statusline+=%h%m%r%w
-"set statusline+=\[%{strlen(&ft)?&ft:'none'}]
-"set statusline+=%=
-"set statusline+=%-14(%l,%c%V%)
-"set statusline+=%<%P
-
-"set ruler
-"set showcmd
-"set showmode
-""""""""""end of statusline section""""""""""
-
 set smartcase
-
-"set fileencodings=utf-8,cp1251,cp866,koi8-r
 
 set hlsearch
 
@@ -225,10 +194,6 @@ set undodir=$VIMHOME/undodir
 set undolevels=1000
 set undoreload=10000
 
-
-"set statusline=%<%f%h%m%r%=format=%{&fileformat}\ file=%{&fileencoding}\ enc=%{&encoding}\ %l,%c%V\ %P
-"set statusline+=%{gutentags#statusline()}
-"set laststatus=2
 
 """"""""""""""""""""""""""
 "disble arrow keys in vim"

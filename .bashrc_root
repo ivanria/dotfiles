@@ -105,6 +105,30 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-export HISTSIZE='10000'
+export HISTSIZE='1000000'
+
+PATH="${PATH}:/root/.local/bin"
 
 ulimit -c unlimited
+
+mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+
+# Function for mount (FAT32/exFAT/NTFS)
+function mount_flash() {
+    local dev=${1:-/dev/sda1}	# first parameter or /dev/sda1
+    local point=${2:-/mnt}	# second parameter or /mnt
+    
+    mount -o rw,uid=1000,gid=1000,umask=000,nofail "$dev" "$point" && \
+    echo "Mounted $dev to $point with full access for ivr"
+}
+
+# Umount function
+function umount_flash() {
+	sync
+	local m_point=${1:-/mnt}
+	umount ${m_point} && echo "Unmounted ${m_point}"
+}
+
+

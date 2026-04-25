@@ -316,3 +316,9 @@ ffmpeg -f x11grab -video_size 1920x1080 -framerate 30 -i :0.0 \
 ###########################
 
 
+### rsync with progress ###
+rsync -ah --info=progress2 /from/folder/ /to/folder # -a or -r for dir copy
+rsync -a --dry-run --info=progress2 /source/ /dest/
+--partial # restore copy
+
+

@@ -118,6 +118,20 @@ ulimit -c unlimited
 
 export HISTSIZE='10000'
 
-export DOTNET_ROOT="$HOME/dotnet"
-export PATH="${PATH}:${DOTNET_ROOT}"
-export PATH="${PATH}:/opt/cxoffice/bin"
+#pattern="/opt/qemu/bin"
+#if [[ ! $PATH =~ $pattern ]]
+#then
+	#export PATH="/opt/qemu/bin:${PATH}"
+#fi
+
+#PATH="${PATH}:~/.local/bin"
+
+
+mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+
+dirsize() {
+  du -sh "$1"
+}
+
