@@ -102,9 +102,10 @@
 "   'f'   file:   open the filename under cursor
 "   'i'   includes: find files that include the filename under cursor
 "   'd'   called: find functions that function under cursor calls
+"   'a'   assign: Find places where this symbol is assigned a value
 """""""""""""""""""""""""""""""""""""""""
-"Yanc Paste. Delete Paste
-" "1-9p or 1-9P it is delete from 1 to 9. 0p or 0P it is last yanc
+"Yank Paste. Delete Paste
+" "1-9p or 1-9P it is delete from 1 to 9. 0p or 0P it is last yank
 " :reg show all register yanc and delete
 """""""""""""""""""""""""""""""""""""""""
 
@@ -126,6 +127,8 @@ endif
 set clipboard=unnamedplus
 
 "set virtualedit=all
+
+set cscopeverbose
 
 let g:gutensyntax_enable = 1
 let g:gutensyntax_syntax_defs = [
