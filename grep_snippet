@@ -1,0 +1,71 @@
+================================================================================
+GREP CHEAT SHEET: -E (ERE) AND -P (PCRE)
+================================================================================
+
+1. ESSENTIAL FLAGS (OPTIONS)
+--------------------------------------------------------------------------------
+-E          Use Extended Regular Expressions (ERE).
+-P          Use Perl-Compatible Regular Expressions (PCRE) - most powerful.
+-i          Ignore case (A and a are the same).
+-v          Invert match: select lines NOT matching the pattern.
+-o          Print ONLY the matched part of the line, not the whole line.
+-n          Print line number with output lines.
+-l          Print ONLY names of files containing matches.
+-r / -R     Recursive search in directories.
+-w          Match whole words only (won't find 'cat' inside 'category').
+-A [n]      Show [n] lines AFTER match.
+-B [n]      Show [n] lines BEFORE match.
+-C [n]      Show [n] lines around match (Context).
+--color     Highlight matches (auto/always).
+
+2. BASIC SYMBOLS (WORKS IN BOTH -E AND -P)
+--------------------------------------------------------------------------------
+.           Any single character.
+^           Start of a line.
+$           End of a line.
+*           0 or more repetitions of the previous character.
++           1 or more repetitions.
+?           0 or 1 repetition.
+
+
+|           Logical "OR" (e.g., "error|warning").
+()          Grouping characters (capturing group).
+[]          Character set (e.g., [a-z], [0-9], [AEIOU]).
+[^]         Negative character set (e.g., [^0-9] - not a digit).
+{n,m}       Repetition from n to m times.
+
+3. EXCLUSIVE PCRE FEATURES (grep -P ONLY)
+--------------------------------------------------------------------------------
+\d          Any digit (same as [0-9]).
+\D          NOT a digit.
+\w          Word character (letter, digit, or underscore).
+\s          Whitespace (space, tab, newline).
+\b          Word boundary.
+.*?         "Lazy" match (find the shortest possible string).
+(?<=...)    Lookbehind: check text on the LEFT (text is not included in match).
+(?=...)     Lookahead: check text on the RIGHT (text is not included in match).
+
+4. PRACTICAL EXAMPLES
+--------------------------------------------------------------------------------
+# Find IP addresses:
+grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' file.txt
+
+# Find Email addresses:
+grep -oP '[\w\.-]+@[\w\.-]+\.\w+' file.txt
+
+# Remove empty lines and comments from config:
+grep -vE '^$|^#' config.conf
+
+# Find text inside quotes (lazy match):
+grep -oP '"\.*?"' file.txt
+
+# Find 5xx HTTP errors in Nginx/Apache logs:
+grep " 50[0-9] " access.log
+
+# Extract text between [brackets] (using Lookaround):
+grep -oP '(?<=\[).*?(?=\])' file.txt
+
+# Search for "xalloc_die" in C source code recursively:
+grep -Hnr '^xalloc_die' .
+
+================================================================================

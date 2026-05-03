@@ -116,7 +116,7 @@ mkcd() {
 }
 
 # Function for mount (FAT32/exFAT/NTFS)
-function mount_flash() {
+function mount_flash_vfat() {
     local dev=${1:-/dev/sda1}	# first parameter or /dev/sda1
     local point=${2:-/mnt}	# second parameter or /mnt
     
@@ -125,10 +125,51 @@ function mount_flash() {
 }
 
 # Umount function
-function umount_flash() {
+function umount_flash_vfat() {
 	sync
 	local m_point=${1:-/mnt}
 	umount ${m_point} && echo "Unmounted ${m_point}"
 }
 
+# Mount external HDD
+function mount_hdd() {
+	local waker_prog="/root/.local/bin/hdd_waker"
+	local waker_name="${waker_prog##*/}"
+	local m_point="${1:-/home/ivr/data}"
+
+	if mountpoint -q "${m_point}"; then
+		echo "HDD already mounted"
+	else
+		if ! mount "$m_point"; then
+			echo "Error, failed mount ${m_point}"
+			return 1
+		fi
+		echo "Mounted ${m_point} Succesfully"
+	fi
+
+	if ! pgrep -x "${waker_name}" > /dev/null; then
+		"${waker_prog}" &
+		echo "Runned ${waker_name} (background)"
+	else
+		echo "${waker_name} Already worked"
+	fi
+}
+
+
+# Umount externel HDD
+function umount_hdd() {
+	local waker_prog="/root/.local/bin/hdd_waker"
+	local m_point="${1:-/home/ivr/data}"
+
+	echo "waker_prog is: ${waker_prog} and trim name: ${waker_prog##*/}"
+	echo "${m_point}"
+
+	umount "${m_point}" && pkill "${waker_prog##*/}"
+	if (( $? != 0 )) ; then
+		echo "Umount ${m_point} Failed !!!!!!"
+		return 1
+	fi
+
+	echo "${m_point} Umount successfully"
+}
 
