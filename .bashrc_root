@@ -107,7 +107,7 @@ fi
 
 export HISTSIZE='1000000'
 
-PATH="${PATH}:/root/.local/bin"
+PATH="/root/.local/bin:${PATH}"
 
 ulimit -c unlimited
 

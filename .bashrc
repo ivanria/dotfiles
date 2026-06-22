@@ -5,6 +5,7 @@ if [[ $TERM == "xterm" ]] ; then
 	export TERM=xterm-256color
 fi
 
+#export SUDO_ASKPASS=/usr/bin/ssh-askpass
 export EDITOR=vim
 export PAGER='less -+i'
 export PROMPT_COMMAND="history -a"
@@ -114,7 +115,7 @@ ulimit -c unlimited
 
 #export LIBVIRT_DEFAULT_URI='qemu:///system'
 
-#export cflags='-Wall -Wextra -Wpedantic -O2 -g -march=atom'
+#export CFLAGS='-Wall -Wextra -Wpedantic'
 
 export HISTSIZE='10000'
 
@@ -127,11 +128,19 @@ export HISTSIZE='10000'
 #PATH="${PATH}:~/.local/bin"
 
 
-mkcd() {
+function mkcd() {
   mkdir -p "$1" && cd "$1"
 }
 
-dirsize() {
+function dirsize() {
   du -sh "$1"
 }
 
+alias kvim='vim -c "cs add ~/data/work/linux-6.19.10/cscope.out ~/data/work/linux-6.19.10"'
+
+
+#export PYENV_ROOT="$HOME/.pyenv"
+#[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+#eval "$(pyenv init - bash)"
+
+#eval "$(pyenv virtualenv-init -)"

@@ -321,4 +321,27 @@ rsync -ah --info=progress2 /from/folder/ /to/folder # -a or -r for dir copy
 rsync -a --dry-run --info=progress2 /source/ /dest/
 --partial # restore copy
 
+### valgrind full check ###
+# --track-origins=yes # show shows the usage of uninitialized memory and
+# where it was allocated
+# --redzone-size=512 # huge chunks of red zones around allocated memory
+# --freelist-vol=100000000 # helps find uses of freed memory after
+# very long periods of time
+# --partial-loads-ok=no # any use of an invalid byte,
+# even if it does not affect the execution of the program
+valgrind --tool=memcheck \
+         --leak-check=full \
+         --show-leak-kinds=all \
+         --track-origins=yes \
+         --verbose \
+         --log-file=valgrind-out.txt \
+         --redzone-size=512 \
+         --freelist-vol=100000000 \
+         --partial-loads-ok=no \
+         ./ваш_исполняемый_файл
+# check stack
+gcc -fno-omit-frame-pointer -fsanitize=address -g -O1 prog.c -o prog
+./prog
+ASAN_OPTIONS=detect_leaks=1:check_initialization_order=true ./prog
+###########################
 

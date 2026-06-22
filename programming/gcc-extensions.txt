@@ -136,3 +136,16 @@ ipcrm sem 5790517 #delete semaphor shown in prev command
 #define STDOUT_FILENO   1       /* Standard output.  */
 #define STDERR_FILENO   2       /* Standard error output.  */
 ###defined in uinstd.h###
+
+###reproducible checksums###
+CFLAGS += -ffile-prefix-map=$(CURDIR)=.
+CFLAGS += -Wno-builtin-macro-redefined -D__DATE__="\"redacted\"" -D__TIME__="\"redacted\""
+LDFLAGS += -Wl,--build-id=none
+OBJS = main.o utils.o network.o # object files order
+LC_ALL=C # Set ini Makefile for sorting
+
+###void *p###
+#The bug may be related to passing a pointer
+#to data on which a segmentation fault does not occur. for exmple:
+#the function accepts void *data, but i pass void **dta as func(&var_pointer);
+gcc -O1 -g -fsanitize=address main.c -o prog

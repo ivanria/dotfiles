@@ -103,11 +103,39 @@
 "   'i'   includes: find files that include the filename under cursor
 "   'd'   called: find functions that function under cursor calls
 "   'a'   assign: Find places where this symbol is assigned a value
+"   '(ctrl + space) + (ctrl + space)    jump func def to func calls
+"""""""""""""""""""""""""""""""""""""""""
+"Lsp
+" A>    :LspCodeAction    (quick fix)
+" W>    :LspHover         Gets the hover information and displays it in the
+" W>    :LspDocumentDiag  Gets the document diagnostics and opens in location-list
+"       :LspDefinition    like cs find g word: find Definition in headders
+"       :LspReference     like cs find s word: find Reference
+"       :LspNextReference
+"       :LspPeekDefinition
+"       :LspNextError
+"       :LspNextWarning
 """""""""""""""""""""""""""""""""""""""""
 "Yank Paste. Delete Paste
 " "1-9p or 1-9P it is delete from 1 to 9. 0p or 0P it is last yank
 " :reg show all register yanc and delete
 """""""""""""""""""""""""""""""""""""""""
+
+"execute pathogen#infect()
+
+" Allow to read $(PWD)/.vimrc files
+set exrc 
+set secure
+
+call plug#begin()
+
+Plug 'itchyny/lightline.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'hupfdule/vimscript-ftplugin'
+
+call plug#end()
 
 set nocompatible
 syntax on
@@ -115,54 +143,123 @@ syntax on
 "set number
 
 let $VIMHOME = $HOME."/.vim"
+set laststatus=2
 
-if $TERM == "xterm-256color"
-	set t_Co=256
+if has('gui_running')
+    " only gvim settings
+    set background=light
+    colorscheme default
+    set guifont=Monospace\ 11 
+else
+    " only console settings
+    "set termguicolors
+    set t_Co=256
+    set background=light
+    colorscheme default
 endif
 
-"if has("termguicolors")
-    "set termguicolors
-"endif
-
 set clipboard=unnamedplus
-
 "set virtualedit=all
 
-set cscopeverbose
+" Set c.vim colors for Lsp colors
 
+" Lsp setup
+set signcolumn=yes
+let g:lsp_hover_ui = 'preview'
+let g:lsp_preview_float = 0
+let g:lsp_preview_keep_focus = 0
+let g:lsp_document_highlight_enabled = 0
+let g:lsp_diagnostics_enabled = 1
+let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_diagnostics_virtual_text_enabled = 0
+
+" lsp highlight
+let g:lsp_semantic_enabled = 1
+
+" 1. struct , union, class
+highlight! default link LspSemanticMacro PreProc
+"highlight! default link cDefine Macro
+highlight! default link LspSemanticGlobalScopeMacro PreProc
+highlight  link LspSemanticStruct     Structure
+highlight  link LspSemanticClass      Structure
+highlight  link LspSemanticInterface  Structure
+
+" 2. enum Days и сами MON, TUE
+highlight  link LspSemanticEnum       Structure
+highlight  link LspSemanticEnumMember Constant
+
+" 3. typedef
+highlight  link LspSemanticType       Type
+highlight  link LspSemanticTypeParameter Type
+
+" 4. #define MAX_VAL
+"highlight  link LspSemanticMacro      Macro
+
+" 5 variable and functions not highlight
+highlight link LspSemanticVariable Normal
+highlight link LspSemanticFunction Normal
+highlight link LspSemanticOperator Normal
+"highlight link LspSemanticParameter Normal
+
+" Set type of '*.h' files as pure C
+let g:c_syntax_for_h = 1
+
+"augroup FixHeaderFileType
+    "autocmd!
+    "autocmd BufRead,BufNewFile *.h set filetype=c
+"augroup END
+
+" Set clangd use gcc includes
+let g:lsp_log_verbose = 1
+let g:lsp_log_file = '/tmp/clangd-vim.log'
+
+"let g:lsp_settings = { 'clangd': { 'cmd': ['/home/ivr/.local/share/vim-lsp-settings/servers/clangd/clangd', '--log=info'] } }
+let g:lsp_settings = { 'clangd': { 'cmd': ['/home/ivr/.local/share/vim-lsp-settings/servers/clangd/clangd', '--log=info', '--query-driver=/usr/bin/gcc,/usr/bin/g++,/usr/bin/cc'] } }
+
+"set cscopeverbose
+
+"let g:gutensyntax_exculde_dirs_root = ['test']
+let g:gutensyntax_debug_enable = 1
+let g:gutensyntax_exclude_file_types = ['txt', 'doc', 'docx', 'pdf']
+let g:gutensyntax_resolv_symlink = 1
+let g:gutensyntax_disable_marker = '__gs_disable'
 let g:gutensyntax_enable = 1
+let g:gutensyntax_use_tmp = 1
+let g:gutensyntax_root_marker = '__gs_enable'
+let g:gutensyntax_exclude_project_root = 
+            \ ['/home/ivr/programming', '/home/ivr', '/home/ivr/data']
 let g:gutensyntax_syntax_defs = [
-\ ['MyCustomCType',  'sgut', 'Type'],
-\ ['MyCustomCMacro', 'de',   'PreProc'],
-\ ['MyCustomCFunc',  'f',    'Function']
+    \ ['GSCustomCEnum',         ['enum'],               'Structure'],
+    \ ['GSCustomCStruct',       ['struct', 'union'],    'Structure'],
+    \ ['GSCustomCType',         ['typedef'],            'Type'],
+    \ ['GSCustomCDefine',       ['macro'],              'Define'],
+    \ ['GSCustomCEnumerator',   ['enumerator'],         'Constant'],
+    \ ['GSCustomCFunc',         ['function'],           'Function']
 \ ]
-
-let g:netrw_dirhistmax=0
 
 let g:gutentags_enabled = 1
 "check in the future is .git gutentags_project_root
-let g:gutentags_exclude_project_root = ['/home/ivr/programming/c']
-let g:gutentags_add_default_project_roots = 1
-"let g:gutentags_project_root = ['__gutentags_enable_file']
-"I'll check in the future whether it works or not "gutentags_root".
-let g:gutentags_modules = ['cscope', 'ctags']
+let g:gutentags_exclude_project_root =
+            \ ['/home/ivr/programming', '/home/ivr', '/home/ivr/data']
+let g:gutentags_add_default_project_roots = 0
+let g:gutentags_ctags_extra_args = ['--tag-relative=no', '--languages=C,C++,Make,Yacc,Flex']
+let g:gutentags_project_root = ['__gutentags_enable_file']
+let g:gutentags_modules = ['gtags_cscope']
 "let g:gutentags_modules = ['ctags']
 "let g:gutentags_ctags_extra_args = ['--links=no', '--languages=c']
 "let g:gutentags_ctags_auto_set_tags = "1"
-let g:gutentags_ctags_tagfile = "__ctags_syntax_src"
+"let g:gutentags_ctags_tagfile = "__ctags_syntax_src"
 "let g:gutentags_ctags_extra_args = ['--recurse', '--tag-relative=no', '--fields=+a', '--languages=C,C++,Make,Yacc,Flex']
 let g:gutentags_generate_on_new = 1
 let g:gutentags_generate_on_missing = 1
 let g:gutentags_generate_on_write = 1
 let g:gutentags_generate_on_empty_buffer = 1
-let g:gutentags_cscope_build_inverted_index = 1
+"let g:gutentags_cscope_build_inverted_index = 1
 "let g:gutentags_exclude_filetypes = ['out']
 "let g:gutentags_file_list_command = 'find . -type f -a \( -name "*.c" -o -name "*.h" -o -name "*.y" -o -name "*.l" -o -name Makefile \) -a -not -name "cscope.*" -a -not \( -path "*/.git/*" -prune \)'
 let g:gutentags_trace = 1
 
 
-nnoremap tk :tabnext<CR> 
-nnoremap tj :tabprev<CR> 
 "nnoremap <C-t> :tabnew<CR>
 
 "color default
@@ -174,17 +271,18 @@ filetype indent on
 """"""""""file extensions""""""""""
 "autocmd BufNewFile,BufRead *.hpp source $VIMHOME/extend_files/cpp.vim 
 "autocmd BufNewFile,BufRead *.cpp source $VIMHOME/extend_files/cpp.vim 
-autocmd BufNewFile,BufRead *.h source $VIMHOME/extend_files/linuxsty.vim 
-autocmd BufNewFile,BufRead *.c source $VIMHOME/extend_files/linuxsty.vim 
-autocmd BufNewFile,BufRead *.bb set syntax=bitbake
+"autocmd BufNewFile,BufRead *.h source $VIMHOME/extend_files/linuxsty.vim 
+"autocmd BufNewFile,BufRead *.c source $VIMHOME/extend_files/linuxsty.vim 
+"autocmd BufNewFile,BufRead *.bb set syntax=bitbake
 "autocmd BufNewFile,BufRead *.h source $VIMHOME/tags_gen.vim 
 "autocmd BufNewFile,BufRead *.c source $VIMHOME/tags_gen.vim 
-autocmd BufNewFile *.c so $VIMHOME/extend_files/cheader.txt
+"autocmd BufNewFile *.c so $VIMHOME/extend_files/cheader.txt
 "autocmd BufNewFile *.cpp so $VIMHOME/extend_files/cppheader.txt
 "autocmd BufNewFile,BufRead *.htm  set cindent shiftwidth=2 tabstop=2 
 "autocmd BufNewFile,BufRead *.html set cindent shiftwidth=2 tabstop=2
 "autocmd BufNewFile,BufRead *.py source $VIMHOME/indent/python.vim
 "autocmd BufNewFile,BufRead 
+"autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=4 softtabstop=4
 """""""""""end of file extensions section""""""""""
 
 set smartcase

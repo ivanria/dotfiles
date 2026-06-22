@@ -1,12 +1,7 @@
 :insert
 #include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 
-extern int EF_ALIGNMENT;
-extern int EF_PROTECT_FREE;
-
-int main(int argc, char **argv)
+int main(void)
 {
 	return 0;
 }

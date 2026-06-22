@@ -17,7 +17,7 @@ if exists("g:loaded_linuxsty")
 endif
 let g:loaded_linuxsty = 1
 
-echo "linuxsty is loaded"
+echo "[Linuxsty]: linuxsty is loaded"
 
 set wildignore+=*.ko,*.mod.c,*.order,modules.builtin
 

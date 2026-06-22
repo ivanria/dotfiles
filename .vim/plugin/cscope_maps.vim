@@ -31,22 +31,22 @@ if has("cscope")
     """"""""""""" Standard cscope/vim boilerplate
 
     " use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
-    set cscopetag
+    "set cscopetag
 
     " check cscope for definition of a symbol before checking ctags: set to 1
     " if you want the reverse search order.
-    set csto=0
+    "set csto=0
 
     " add any cscope database in current directory
-    if filereadable("cscope.out")
-        cs add cscope.out  
+    "if filereadable("cscope.out")
+        "cs add cscope.out  
     " else add the database pointed to by environment variable 
-    elseif $CSCOPE_DB != ""
-        cs add $CSCOPE_DB
-    endif
+    "elseif $CSCOPE_DB != ""
+        "cs add $CSCOPE_DB
+    "endif
 
     " show msg when any other cscope db added
-    set cscopeverbose  
+    "set cscopeverbose  
 
 
     """"""""""""" My cscope/vim key mappings
@@ -88,14 +88,6 @@ if has("cscope")
     " go back to where you were before the search.  
     "
 
-    nmap <C-\>s :tab cs find s <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>g :tab cs find g <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>c :tab cs find c <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>t :tab cs find t <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>e :tab cs find e <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>f :tab cs find f <C-R>=expand("<cfile>")<CR><CR>	
-    nmap <C-\>i :tab cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-    nmap <C-\>d :tab cs find d <C-R>=expand("<cword>")<CR><CR>	
 
 
     " Using 'CTRL-spacebar' (intepreted as CTRL-@ by vim) then a search type
@@ -114,7 +106,11 @@ if has("cscope")
     nmap <C-@>f  :scs find f <C-R>=expand("<cfile>")<CR><CR>	
     nmap <C-@>i  :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>	
     nmap <C-@>d  :scs find d <C-R>=expand("<cword>")<CR><CR>	
-:
+    " gtags mappings
+    nmap <C-@>a  :scs find a <C-R>=expand("<cword>")<CR><CR>	
+    "nmap <silent> <C-@>n :cnext<CR>
+    "nmap <silent> <C-@>p :cprevious<CR>
+    nmap <silent> <C-@><C-@> :cs find 0 <C-R>=expand("<cword>")<CR><CR>
 
     " Hitting CTRL-space *twice* before the search type does a vertical 
     " split instead of a horizontal one (vim 6 and up only)
@@ -122,14 +118,6 @@ if has("cscope")
     " (Note: you may wish to put a 'set splitright' in your .vimrc
     " if you prefer the new window on the right instead of the left
 
-    nmap <C-@><C-@>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>	
-    nmap <C-@><C-@>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>	
-    nmap <C-@><C-@>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
 
 
     """"""""""""" key map timeouts
