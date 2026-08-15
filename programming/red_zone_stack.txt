@@ -1,0 +1,11 @@
+Memory addresses
+  |   ...
+  |   300 [ Parent function arguments ] (higher RSP, not Red Zone)
+  |   256 [ 8 bytes: RETURN ADDRESS ]        <-- Current RSP = 256
+  |  ==================================================================
+  |   248 [ Start of Red Zone (1-t byte) ]   \
+  |   ... [ ... compillers variables ]        ) exactly 128 bytes BELOW
+  |   ... [ ... hidden variables     ]        )  under currently RSP
+  |   120 [ end of Red Zone (128-th bytes) ] /
+  |  ==================================================================
+  V   112 [ clear memory ] (from 112 - to 0)

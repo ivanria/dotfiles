@@ -7,3 +7,60 @@ rdi - destination index
 rsp - stack pointer
 rbp - dase pointer
 r8 - r15
+
+
+===============================================================================
+     GCC/CLANG EXTENDED INLINE ASSEMBLY REFERENCE (x86 / x86_64)
+===============================================================================
+
+1. GENERAL OPERAND CONSTRAINTS (INPUT / OUTPUT)
+-------------------------------------------------------------------------------
+Constraint | Type      | Description
+-----------+-----------+---------------------------------------------------
+"r"        | Register  | General-purpose register chosen by the compiler.
+"m"        | Memory    | Direct memory address (avoids allocating a register).
+"i"        | Immediate | Immediate integer constant known at compile-time.
+"g"        | General   | Any of the above (register, memory, or immediate).
+
+2. SPECIFIC REGISTER ALIASES (x86 / x86_64 ONLY)
+-------------------------------------------------------------------------------
+Constraint | Register  | Typical Architectural Use Cases
+-----------+-----------+---------------------------------------------------
+"a"        | RAX/EAX   | Syscall number, return values, mul/div operations.
+"b"        | RBX/EBX   | Base register, generic pointers.
+"c"        | RCX/ECX   | Loop counter (loop), shift count (cl), rep prefix.
+"d"        | RDX/EDX   | 3rd syscall arg, high-half of mul/div (RDX:RAX).
+"S"        | RSI/ESI   | Source Index for string ops (rep movs, lodsb).
+"D"        | RDI/EDI   | Destination Index for string ops (rep movs), 1st syscall arg.
+
+3. OPERAND MODIFIERS (PREFIXES FOR OUTPUTS)
+-------------------------------------------------------------------------------
+Modifier   | Mode       | Description
+-----------+------------+--------------------------------------------------
+"="        | Write-Only | Output-only. Overwrites previous variable content.
+"+"        | Read-Write | Input and output. Loaded before, updated after.
+"&"        | Earlyclobber| Reg is modified before inputs are fully consumed.
+                        | Prevents GCC from reusing the same register.
+
+4. CLOBBER LIST KEYWORDS (DESTRUCTION LIST)
+-------------------------------------------------------------------------------
+Clobber    | Target     | Description
+-----------+------------+--------------------------------------------------
+"cc"       | Flags      | Status flags register (RFLAGS/EFLAGS) is modified.
+"memory"   | RAM        | Forces compiler to flush/reload caches from RAM.
+"rax"      | RAX        | Specific register used as a temporary scratch pad.
+"rcx"      | RCX        | Destroyed natively by the 'syscall' hardware op.
+"r11"      | R11        | Destroyed natively by the 'syscall' hardware op.
+"xmm0"-"15"| SIMD Regs  | Vector registers modified by SSE/AVX instructions.
+
+===============================================================================
+SYNTAX TEMPLATE
+===============================================================================
+__asm__ volatile (
+    "instruction1 %[in_val], %[out_val] \n\t"
+    "instruction2 \n\t"
+    : [out_val] "=&r" (c_output_var)     // Outputs
+    : [in_val]  "r"   (c_input_var)      // Inputs
+    : "cc", "memory", "rcx", "r11"       // Clobbers
+);
+===============================================================================
